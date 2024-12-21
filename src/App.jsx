@@ -14,6 +14,7 @@ import authservice from "./services/auth";
 import { login, logout } from "./store/authSlice";
 import CreateBlog from "./features/blogs/CreateBlog";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import Loader from "./ui/Loader";
 
 function App() {
   const [loading, setIsLoading] = useState(true);
@@ -39,6 +40,10 @@ function App() {
         setIsLoading(false);
       });
   });
+
+  if (loading) {
+    return <Loader/>;
+  }
 
   return (
     <BrowserRouter>
