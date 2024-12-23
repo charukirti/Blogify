@@ -4,9 +4,11 @@ import Header from "./Header";
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen flex   flex-col">
+    <div>
       <Header />
+      <main className="max-w-7xl mx-auto px-4  ">
       <Outlet />
+      </main>
     </div>
   );
 }
