@@ -1,109 +1,97 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import { avatar } from "../services/appwrite";
 import LogoutButton from "./LogoutButton";
 import SearchBar from "./SearchBar";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
 
 export default function Header() {
-  const { status } = useSelector((state) => state.auth);
+  const { status, userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const navItems = [
-    { title: "Blogs", path: "/blogs", active: status },
-    { title: "Write", path: "/create", active: status },
-    { title: "Dashboard", path: "/dashboard", active: status },
+  const menuItems = [
+    { title: "Blogs", path: "/blogs" },
+    { title: "Write", path: "/create" },
+  ];
+
+  const dropdownItems = [
+    { title: "Profile", path: "/profile" },
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Settings", path: "/settings" },
   ];
 
   return (
-    <header className="py-2 md:py-4 px-4 md:px-28 bg-white shadow-md sticky top-0 z-10">
-      <nav className="max-w-full mx-auto ">
+    <header className="bg-neutral-800 py-4">
+      <nav className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2 md:space-x-8">
-            <Link
-              to="/"
-              className="text-xl md:text-2xl font-bold text-slate-900"
-            >
+          <div className="flex items-center gap-6">
+            <Link to="/" className="text-2xl md:text-3xl font-bold text-white">
               Blogify
             </Link>
-            {status && (
-              <div className="hidden md:block">
-                <SearchBar />
-              </div>
-            )}
+
+            <SearchBar />
           </div>
 
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          <ul className="hidden md:flex space-x-4 items-center">
-            {navItems.map(
-              (item) =>
-                item.active && (
-                  <li key={item.title}>
-                    <button
-                      onClick={() => navigate(item.path)}
-                      className="text-slate-700 hover:text-slate-900 font-medium px-2 py-1"
-                    >
-                      {item.title}
-                    </button>
-                  </li>
-                )
-            )}
-
-            {status && (
-              <li>
-                <LogoutButton />
-              </li>
-            )}
-
-            {!status && (
-              <li>
-                <button className="bg-slate-950 hover:bg-slate-800 text-slate-200 px-4 py-2 rounded-lg" onClick={() => navigate("/signin")}>
-                  Sign in
+          <div className=" flex items-center gap-6">
+            {status &&
+              menuItems.map((item) => (
+                <button
+                  key={item.title}
+                  onClick={() => navigate(item.path)}
+                  className="text-gray-300 hover:text-white"
+                >
+                  {item.title}
                 </button>
-              </li>
-            )}
-          </ul>
-        </div>
+              ))}
 
-        <div className="md:hidden mt-4">
-          <SearchBar />
-        </div>
+            {status ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center space-x-2"
+                >
+                  <img
+                    src={
+                      userData?.email ? avatar.getInitials(userData.email) : ""
+                    }
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                </button>
 
-        {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <ul className="flex flex-col space-y-2 items-center">
-              {navItems.map(
-                (item) =>
-                  item.active && (
-                    <li key={item.title}>
+                {isProfileOpen && (
+                  <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg">
+                    <div className="p-2 border-b border-neutral-700">
+                      <p className="text-sm text-white">{userData?.name}</p>
+                      <p className="text-xs text-gray-400">{userData?.email}</p>
+                    </div>
+                    {dropdownItems.map((item) => (
                       <button
+                        key={item.title}
                         onClick={() => {
                           navigate(item.path);
-                          setIsMenuOpen(false);
+                          setIsProfileOpen(false);
                         }}
-                        className="w-full text-left text-slate-700 hover:text-slate-900 font-medium px-2 py-2 hover:bg-slate-50 rounded"
+                        className="w-full my-1 p-2 rounded-md text-left text-gray-300 hover:bg-neutral-700"
                       >
                         {item.title}
                       </button>
-                    </li>
-                  )
-              )}
-              {status && (
-                <li className="px-2">
-                  <LogoutButton />
-                </li>
-              )}
-            </ul>
+                    ))}
+                    <LogoutButton />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate("/signin")}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              >
+                Sign In
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

@@ -1,4 +1,4 @@
-        // test pass :- Hfdjhj@jfdj1212
+// test pass :- Hfdjhj@jfdj1212
 import { useState } from "react";
 import authservice from "../../services/auth";
 import { useForm } from "react-hook-form";
@@ -16,15 +16,16 @@ export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-
   const onSubmit = async (data) => {
-  
     setError("");
 
-    const {email, password, name} = data;
+    const { email, password, name } = data;
     try {
-      const userData = await authservice.createNewAccount(email, password, name);
+      const userData = await authservice.createNewAccount(
+        email,
+        password,
+        name
+      );
 
       if (userData) {
         const userData = await authservice.getCurrentUser();
@@ -39,22 +40,22 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-dvh flex items-center justify-center flex-col">
-      <h1 className="text-4xl font-inter font-bold text-gray-800 mb-6 text-center">
+    <div className="min-h-dvh flex items-center justify-center flex-col ">
+      <h1 className="text-4xl font-inter font-bold text-white mb-6 text-center">
         Blogify
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md rounded-lg shadow-md p-6"
+        className="w-full max-w-md rounded-lg shadow-xl p-6 bg-neutral-700"
       >
-        <h2 className="text-4xl font-inter font-bold text-gray-800 mb-6 text-center">
+        <h2 className="text-4xl font-inter font-bold text-white mb-6 text-center">
           Create an Account
         </h2>
 
         <div className="mb-4">
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-600 mb-2"
+            className="block text-sm font-medium text-gray-200 mb-2"
           >
             Name
           </label>
@@ -73,7 +74,7 @@ export default function SignUp() {
         <div className="mb-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-600 mb-2"
+            className="block text-sm font-medium text-gray-200 mb-2"
           >
             Email
           </label>
@@ -98,7 +99,7 @@ export default function SignUp() {
         <div className="mb-4">
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-600 mb-2"
+            className="block text-sm font-medium text-gray-200 mb-2"
           >
             Password
           </label>
@@ -120,7 +121,7 @@ export default function SignUp() {
           )}
         </div>
 
-        <p className="text-right my-5">
+        <p className="text-right my-5 text-gray-100">
           Already have an account?{" "}
           <Link to="/signin" className="text-blue-400">
             Sign in
@@ -129,13 +130,12 @@ export default function SignUp() {
 
         <button
           type="submit"
-          className="w-full py-2 text-white rounded-lg bg-slate-950 hover:bg-slate-800"
+          className="w-full py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-500"
         >
           Sign up
         </button>
+        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
       </form>
-
-      {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
     </div>
   );
 }

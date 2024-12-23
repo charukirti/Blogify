@@ -15,6 +15,7 @@ import { login, logout } from "./store/authSlice";
 import CreateBlog from "./features/blogs/CreateBlog";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Loader from "./ui/Loader";
+import Profile from "./pages/Profile";
 
 function App() {
   const [loading, setIsLoading] = useState(true);
@@ -112,6 +113,14 @@ function App() {
             element={
               <ProtectedRoute isAuthenticated>
                 <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isAuthenticated>
+                <Profile />
               </ProtectedRoute>
             }
           />

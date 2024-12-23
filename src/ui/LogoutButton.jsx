@@ -12,7 +12,7 @@ export default function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="bg-slate-950 hover:bg-slate-800 text-slate-200 px-4 py-2 rounded-lg"
+      className=" hover:bg-red-600 text-slate-200 w-full py-2 mb-1 rounded-md text-1xl"
     >
       Logout
     </button>
