@@ -1,4 +1,4 @@
-import { Account, Avatars, Client } from "appwrite";
+import { Account, Avatars, Client, Databases, Storage, Query } from "appwrite";
 import conf from "../conf/conf";
 
 const client = new Client();
@@ -9,5 +9,7 @@ client
 
 export const account = new Account(client);
 export const avatar = new Avatars(client)
+export const databases = new Databases(client);
+export const bucket = new Storage(client);
 
 export { ID } from 'appwrite';
