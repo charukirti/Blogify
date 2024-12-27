@@ -1,7 +1,7 @@
 import conf from "../conf/conf";
 import { bucket, ID } from "./appwrite";
 
-class BucketService { 
+class BucketService {
 
     async uploadFile(file) {
         try {
@@ -9,10 +9,10 @@ class BucketService {
                 conf.thumbnailStoreID,
                 ID.unique(),
                 file
-            )
+            );
         } catch (error) {
             console.log('Appwrite Service :: uploadFile :: error', error);
-       }
+        }
     }
 
     async deleteFile(fileID) {
@@ -20,17 +20,17 @@ class BucketService {
             return await bucket.deleteFile(
                 conf.thumbnailStoreID,
                 fileID
-            )
+            );
         } catch (error) {
             console.log('Appwrite Service :: deleteFile :: error', error);
         }
     }
 
-    getFilePreview(fileID) { 
-       return bucket.getFilePreview(
-                conf.thumbnailStoreID,
-                fileID
-            )
+    getFilePreview(fileID) {
+        return bucket.getFilePreview(
+            conf.thumbnailStoreID,
+            fileID
+        );
     }
 }
 

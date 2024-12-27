@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import authservice from "../services/auth"; // Import your AuthService class
-import { avatar } from "../services/appwrite"; // Import Appwrite's avatar service
+import authservice from "../../services/auth"; 
+import { avatar } from "../../services/appwrite"; 
+import Loader from "../Loader";
 
 export default function Avatar() {
   const [user, setUser] = useState(null);
@@ -23,7 +24,7 @@ export default function Avatar() {
   }, []);
 
   if (!user) {
-    return <p>Loading user details...</p>;
+    return <Loader/>
   }
 
   return (

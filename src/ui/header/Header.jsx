@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
-import { avatar } from "../services/appwrite";
+import { avatar } from "../../services/appwrite";
 import LogoutButton from "./LogoutButton";
 import SearchBar from "./SearchBar";
 
@@ -61,7 +61,7 @@ export default function Header() {
                 </button>
 
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg">
+                  <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-10">
                     <div className="p-2 border-b border-neutral-700">
                       <p className="text-sm text-white">{userData?.name}</p>
                       <p className="text-xs text-gray-400">{userData?.email}</p>

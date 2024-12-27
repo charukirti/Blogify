@@ -4,15 +4,15 @@ import Blogs from "./pages/Blogs";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Blog from "./pages/Blog";
-import SignIn from "./features/auth/SignIn";
-import SignUp from "./features/auth/SignUp";
-import Analytics from "./features/analytics/Analytics";
+import SignIn from "./ui/auth/SignIn";
+import SignUp from "./ui/auth/SignUp";
+import Analytics from "./ui/analytics/Analytics";
 import AppLayout from "./ui/AppLayout";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import authservice from "./services/auth";
 import { login, logout } from "./store/authSlice";
-import CreateBlog from "./features/blogs/CreateBlog";
+import CreateBlog from "./ui/blogs/CreateBlog";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Loader from "./ui/Loader";
 import Profile from "./pages/Profile";
@@ -43,7 +43,7 @@ function App() {
   });
 
   if (loading) {
-    return <Loader/>;
+    return <Loader />;
   }
 
   return (
@@ -84,7 +84,7 @@ function App() {
           />
 
           <Route
-            path="/blogs/:id"
+            path="/blog/:id"
             element={
               <ProtectedRoute isAuthenticated>
                 <Blog />
@@ -107,7 +107,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-         
+
           <Route
             path="/dashboard/analytics"
             element={

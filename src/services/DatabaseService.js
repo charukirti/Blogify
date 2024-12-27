@@ -1,27 +1,43 @@
-import { Query } from "appwrite";
-import { databases, ID, bucket } from "./appwrite";
+import { ID, Query } from "appwrite";
+import { account, databases } from "./appwrite";
 import conf from "../conf/conf";
 import { validatePostData } from "../utils/validatePosts";
 
 
 export class DatabaseService {
 
+    // function to get userId
+
+    async getUserId(userId) {
+        try {
+            return await account.get(userId);
+        } catch (error) {
+            console.log('Appwrite service :: getUserId :: error', error);
+        }
+    }
+
+    // function to get current date
+    getCurrentDate() {
+        return new Date().toISOString();
+    }
 
     // Create a new document in the database
 
-    async createPost({ title, slug, content, featuredImage, author_id, created_at, status, tags }) {
+    async createPost({ title, slug, content, featuredImage, author_id, description, created_at, status, tags }) {
         try {
             validatePostData({ title, slug, content, tags });
             return await databases.createDocument(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
-                slug,
+                ID.unique(),
                 {
                     title,
                     content,
+                    description,
+                    slug,
                     featuredImage,
                     status,
-                    created_at: created_at || Date.now(),
+                    created_at: this.getCurrentDate(),
                     author_id,
                     tags,
                 }
@@ -33,20 +49,22 @@ export class DatabaseService {
         }
     }
     // update post
-    async updatePost(slug, { title, content, featuredImage, updated_at, status, tags }) {
+    async updatePost(documentId, { title, slug, content, featuredImage, description, updated_at, status, tags }) {
         try {
             validatePostData({ title, slug, content, tags });
             return await databases.updateDocument(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
-                slug,
+                documentId,
                 {
                     title,
                     content,
+                    description,
+                    slug,
                     featuredImage,
                     tags,
                     status,
-                    updated_at: updated_at || Date.now(),
+                    updated_at: this.getCurrentDate(),
                 }
             );
         } catch (error) {
@@ -57,12 +75,12 @@ export class DatabaseService {
 
     // delete post
 
-    async deletePost(slug) {
+    async deletePost(documentId) {
         try {
             await databases.deleteDocument(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
-                slug
+                documentId
             );
             return true;
         } catch (error) {
@@ -73,12 +91,12 @@ export class DatabaseService {
     }
 
     // get single post
-    async getPost(slug) {
+    async getPost(documentId) {
         try {
             return await databases.getDocument(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
-                slug
+                documentId
             );
         } catch (error) {
             console.log('Appwrite service :: getPost :: error', error);

@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import authservice from "../services/auth";
 import { useSelector } from "react-redux";
 import { avatar } from "../services/appwrite";
+import Loader from "../ui/Loader";
 
 export default function Profile() {
   const { status, userData } = useSelector((state) => state.auth);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+console.log(userData)
   useEffect(() => {
     async function fetchUserDetails() {
       setLoading(true);
@@ -26,7 +27,7 @@ export default function Profile() {
   }, []);
 
   if (loading) {
-    return <p className="text-white">Loading...</p>;
+    return <Loader />;
   }
 
   return (
