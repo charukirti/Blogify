@@ -2,6 +2,7 @@ import { ID, Query } from "appwrite";
 import { account, databases } from "./appwrite";
 import conf from "../conf/conf";
 import { validatePostData } from "../utils/validatePosts";
+import interactionService from "./interactionService";
 
 
 export class DatabaseService {
@@ -94,11 +95,17 @@ export class DatabaseService {
     // get single post
     async getPost(documentId) {
         try {
-            return await databases.getDocument(
+            const post = await databases.getDocument(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
                 documentId
             );
+            
+            const likes_count = await interactionService.getLikesCount(documentId);
+            return {
+                ...post,
+                likes_count
+            };
         } catch (error) {
             console.log('Appwrite service :: getPost :: error', error);
             throw new Error('Error while fetching post');
@@ -109,20 +116,36 @@ export class DatabaseService {
 
     async getPosts(queries = [Query.equal('status', 'active')]) {
         try {
-            return await databases.listDocuments(
+            const posts = await databases.listDocuments(
                 conf.appDatabaseID,
                 conf.blogsCollectionID,
                 queries,
             );
+            
+            const postsWithLikes = await Promise.all(
+                posts.documents.map(async (post) => {
+                    const likes_count = await interactionService.getLikesCount(post.$id);
+                    return {
+                        ...post,
+                        likes_count
+                    };
+                })
+            );
+            
+            return {
+                ...posts,
+                documents: postsWithLikes
+            };
         } catch (error) {
             console.log('Appwrite service :: getAllPosts :: error', error);
             throw new Error('Error while fetching posts');
         }
     }
+}
 
     // 
 
-}
+
 
 const dbService = new DatabaseService();
 export default dbService;
