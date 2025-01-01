@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dbService from "../services/DatabaseService";
+import authservice from "../services/auth";
 import { Query } from "appwrite";
 
 export const fetchPostWithAuthor = createAsyncThunk(
@@ -45,17 +46,40 @@ export const fetchPost = createAsyncThunk(
     }
 );
 
+
+
 export const fetchAuthorPosts = createAsyncThunk(
     'posts/fetchAuthorPosts',
-    async (id, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const posts = await dbService.getPosts([Query.equal('author_id', id)]);
-            return posts.documents;
+            const user = await authservice.getCurrentUser();
+
+            const posts = await dbService.getPosts([Query.equal('author_id', user.$id)]);
+
+
+            const postsWithAuthors = posts.documents.map(post => ({
+                ...post,
+                author: user
+            }));
+
+            return postsWithAuthors;
         } catch (error) {
             rejectWithValue(error.message);
         }
     }
 );
+
+// export const fetchAuthorPosts = createAsyncThunk(
+//     'posts/fetchAuthorPosts',
+//     async (id, { rejectWithValue }) => {
+//         try {
+//             const posts = await dbService.getPosts([Query.equal('author_id', id)]);
+//             return posts.documents;
+//         } catch (error) {
+//             rejectWithValue(error.message);
+//         }
+//     }
+// );
 
 const initialState = {
     posts: [],
