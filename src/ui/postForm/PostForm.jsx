@@ -232,7 +232,7 @@ export default function PostForm({ post }) {
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">Current image:</p>
                   <img
-                    src={post.featuredImage}
+                    src={bucketService.getFilePreview(post.featuredImage)}
                     alt="Current featured image"
                     className="mt-1 h-32 w-auto object-cover rounded"
                   />
