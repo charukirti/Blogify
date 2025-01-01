@@ -16,6 +16,7 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Loader from "./ui/Loader";
 import Profile from "./pages/Profile";
 import PageNotFound from "./ui/PageNotFound";
+import EditPost from "./pages/EditPost";
 
 function App() {
   const [loading, setIsLoading] = useState(true);
@@ -86,6 +87,14 @@ function App() {
             element={
               <ProtectedRoute isAuthenticated>
                 <CreateBlog />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit/:id"
+            element={
+              <ProtectedRoute isAuthenticated>
+                <EditPost />
               </ProtectedRoute>
             }
           />
