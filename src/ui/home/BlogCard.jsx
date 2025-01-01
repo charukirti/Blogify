@@ -5,15 +5,7 @@ import { useEffect } from "react";
 import { fetchLikesCount } from "../../store/interactionsSlice";
 
 export default function BlogCard({ post }) {
-  const { hasLiked, likesCount } = useSelector((state) => state.interactions);
-  const dispatch = useDispatch();
   console.log(post);
-
-  useEffect(() => {
-    dispatch(fetchLikesCount(post.$id));
-  }, [dispatch, post.$id]);
-
-  console.log(likesCount);
 
   const {
     title,
@@ -21,8 +13,8 @@ export default function BlogCard({ post }) {
     featuredImage,
     $createdAt,
     updatedAt,
-    likes = likesCount[post.$id] || 0,
-    comments = 0,
+    likes_count,
+    comments_count,
   } = post;
 
   return (
@@ -60,8 +52,8 @@ export default function BlogCard({ post }) {
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="text-sm">❤️ {likes}</span>
-            <span className="text-sm">💬 {comments}</span>
+            <span className="text-sm">❤️ {likes_count || 0}</span>
+            <span className="text-sm">💬 {comments_count || 0}</span>
           </div>
         </div>
       </div>
