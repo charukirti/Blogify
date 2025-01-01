@@ -1,16 +1,21 @@
 import { useState } from "react";
+import AuthorPosts from "../ui/dashboard/AuthorPosts";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("Profile");
+  const [activeTab, setActiveTab] = useState("Posts");
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "Posts":
-        return <div>Your posts go here...</div>;
+        return <AuthorPosts />;
       case "Analytics":
         return <div>Your analytics data goes here...</div>;
       default:
-        return <div>Select a tab to view content.</div>;
+        return (
+          <p className="text-base lg:text-2xl text-gray-200">
+            Select the tab you want
+          </p>
+        );
     }
   };
 
