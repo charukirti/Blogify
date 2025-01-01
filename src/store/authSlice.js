@@ -5,11 +5,13 @@ const initialState = {
     userData: null
 };
 
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         login(state, action) {
+           
             state.status = true;
             state.userData = action.payload.userData;
         },

@@ -32,7 +32,7 @@ export default function SignUp() {
 
         if (userData) dispatch(login(userData));
 
-        navigate("/blogs");
+        navigate("/");
       }
     } catch (error) {
       setError(error.message);

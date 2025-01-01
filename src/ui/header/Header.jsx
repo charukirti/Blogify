@@ -11,7 +11,6 @@ export default function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const menuItems = [
-    { title: "Blogs", path: "/blogs" },
     { title: "Write", path: "/create" },
   ];
 

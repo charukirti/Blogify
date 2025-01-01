@@ -23,7 +23,7 @@ export class DatabaseService {
 
     // Create a new document in the database
 
-    async createPost({ title, slug, content, featuredImage, author_id, description, created_at, status, tags }) {
+    async createPost({ title, slug, content, featuredImage, author_id, author_name, description, created_at, status, tags }) {
         try {
             validatePostData({ title, slug, content, tags });
             return await databases.createDocument(
@@ -39,6 +39,7 @@ export class DatabaseService {
                     status,
                     created_at: this.getCurrentDate(),
                     author_id,
+                    author_name,
                     tags,
                 }
             );

@@ -27,7 +27,7 @@ export default function SignIn() {
         const userData = await authservice.getCurrentUser();
         if (userData) {
           dispatch(authLogin(userData));
-          navigate("/blogs");
+          navigate("/");
         }
       }
     } catch (error) {

@@ -85,6 +85,7 @@ export default function PostForm({ post }) {
 
       if (!post) {
         postData.author_id = userData.$id;
+        postData.author_name = userData.name;
       }
 
       const dbPost = post

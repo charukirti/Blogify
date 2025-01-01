@@ -1,19 +1,20 @@
-
-
-const tags = ["React", "JavaScript", "TypeScript", "CSS", "HTML", "Next.js", "Node.js", "GraphQL"]
-
-export default function TagsSection() {
+export default function TagsSection({ posts, onTagClick }) {
+  const uniqueTags = [...new Set(posts.flatMap((post) => post.tags))];
   return (
-    <aside className="w-full md:w-64">
-      <h2 className="text-2xl font-bold mb-4">Tags</h2>
-      <div className="flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <button key={tag}  size="sm">
+    <section className="mb-8">
+      <h2 className="text-2xl font-bold mb-4 text-gray-200">Filter by Tags</h2>
+      <div className="flex flex-wrap gap-2 items-center">
+        {uniqueTags.map((tag) => (
+          <button
+            key={tag}
+            size="sm"
+            className="text-gray-200 bg-zinc-400 px-2 py-1 rounded"
+            onClick={() => onTagClick(tag)}
+          >
             {tag}
           </button>
         ))}
       </div>
-    </aside>
-  )
+    </section>
+  );
 }
-

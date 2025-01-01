@@ -1,20 +1,32 @@
 import { Link } from "react-router";
 import bucketService from "../../services/bucketService";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchLikesCount } from "../../store/interactionsSlice";
 
 export default function BlogCard({ post }) {
+  const { hasLiked, likesCount } = useSelector((state) => state.interactions);
+  const dispatch = useDispatch();
   console.log(post);
+
+  useEffect(() => {
+    dispatch(fetchLikesCount(post.$id));
+  }, [dispatch, post.$id]);
+
+  console.log(likesCount);
+
   const {
     title,
     description,
     featuredImage,
     $createdAt,
     updatedAt,
-    likes = 0,
+    likes = likesCount[post.$id] || 0,
     comments = 0,
   } = post;
 
   return (
-    <div className="bg-[#95a5a6]  p-4 rounded-lg shadow-lg hover:shadow-xl transition w-max">
+    <div className="bg-[#95a5a6]  p-2 rounded-lg shadow-lg hover:shadow-xl transition ">
       <Link to={`/blog/${post.$id}`}>
         <img
           src={bucketService.getFilePreview(featuredImage)}
@@ -32,20 +44,24 @@ export default function BlogCard({ post }) {
           {description}
         </p>
 
-        <div className="flex justify-between items-center text-[#ffffff] text-xs mt-4">
-          <div className="space-x-2">
-            <span>Created: {new Date($createdAt).toLocaleDateString()}</span>
+        <div className="flex justify-between  items-center text-[#ffffff] text-xs mt-4">
+          <div className="flex flex-col g">
+            <span className="lg:text-sm">
+              Published at: {new Date($createdAt).toLocaleDateString()}
+            </span>
             {updatedAt && (
               <span className="before:content-['•'] before:mx-2">
                 Updated: {new Date(updatedAt).toLocaleDateString()}
               </span>
             )}
-            <span>by {post.author?.name || 'Anonymous'}</span>
+            <span className="lg:text-sm">
+              by {post.author_name || "Anonymous"}
+            </span>
           </div>
 
           <div className="flex items-center space-x-4">
-            <span>❤️ {likes}</span>
-            <span>💬 {comments}</span>
+            <span className="text-sm">❤️ {likes}</span>
+            <span className="text-sm">💬 {comments}</span>
           </div>
         </div>
       </div>

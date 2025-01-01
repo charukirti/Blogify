@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import Blogs from "./pages/Blogs";
-import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Blog from "./pages/Blog";
 import SignIn from "./ui/auth/SignIn";
@@ -16,12 +15,11 @@ import CreateBlog from "./ui/blogs/CreateBlog";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Loader from "./ui/Loader";
 import Profile from "./pages/Profile";
+import PageNotFound from "./ui/PageNotFound";
 
 function App() {
   const [loading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-
-  // check if user is logged in
 
   useEffect(function () {
     authservice
@@ -69,15 +67,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute isAuthenticated={false}>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/blogs"
-            element={
-              <ProtectedRoute isAuthenticated>
+              <ProtectedRoute isAuthenticated={true}>
                 <Blogs />
               </ProtectedRoute>
             }
@@ -121,6 +111,14 @@ function App() {
             element={
               <ProtectedRoute isAuthenticated>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute isAuthenticated>
+                <PageNotFound />
               </ProtectedRoute>
             }
           />

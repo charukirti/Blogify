@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children, isAuthenticated = true }) {
       if (isAuthenticated && authStatus !== isAuthenticated) {
         navigate("/signin");
       } else if (!isAuthenticated && authStatus !== isAuthenticated) {
-        navigate("/blogs");
+        navigate("/");
       }
 
       setLoader(false);
