@@ -1,6 +1,6 @@
 import bucketService from "../../services/bucketService";
 import { Edit, Trash } from "lucide-react";
-import DeletePostModal from "../DeletePostModal";
+import DeletePostModal from "./DeletePostModal";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -54,10 +54,12 @@ export default function AuthorPostCard({ post }) {
             Published on : {formatDate(post.$createdAt)}
           </span>
           <div className="flex gap-2">
-           <Link to={`/edit/${post.$id}`}> <button className="text-blue-600 hover:text-blue-700 px-2 py-1 rounded border border-blue-600 hover:border-blue-700 transition-colors" >
-              <Edit size={22} />
-            </button>
-              </Link>
+            <Link to={`/edit/${post.$id}`}>
+              {" "}
+              <button className="text-blue-600 hover:text-blue-700 px-2 py-1 rounded border border-blue-600 hover:border-blue-700 transition-colors">
+                <Edit size={22} />
+              </button>
+            </Link>
             <button
               className="text-red-600 hover:text-red-700 px-2 py-1 rounded border border-red-600 hover:border-red-700 transition-colors"
               onClick={handleDelete}
@@ -70,8 +72,7 @@ export default function AuthorPostCard({ post }) {
       {showDeleteModal && (
         <DeletePostModal
           handleShowDeleteModal={setShowDeleteModal}
-          postId={post.$id}
-          fileId={post.featuredImage}
+          post={post}
         />
       )}
     </div>
