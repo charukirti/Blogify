@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dbService from "../services/DatabaseService";
 import authservice from "../services/auth";
 import { Query } from "appwrite";
+import bucketService from "../services/bucketService";
 
 export const fetchPostWithAuthor = createAsyncThunk(
     'posts/fetchPostWithAuthor',
@@ -46,8 +47,6 @@ export const fetchPost = createAsyncThunk(
     }
 );
 
-
-
 export const fetchAuthorPosts = createAsyncThunk(
     'posts/fetchAuthorPosts',
     async (_, { rejectWithValue }) => {
@@ -69,17 +68,22 @@ export const fetchAuthorPosts = createAsyncThunk(
     }
 );
 
-// export const fetchAuthorPosts = createAsyncThunk(
-//     'posts/fetchAuthorPosts',
-//     async (id, { rejectWithValue }) => {
-//         try {
-//             const posts = await dbService.getPosts([Query.equal('author_id', id)]);
-//             return posts.documents;
-//         } catch (error) {
-//             rejectWithValue(error.message);
-//         }
-//     }
-// );
+export const deletePost = createAsyncThunk(
+    'posts/deletePost',
+    async ({ postId, fileId }, { rejectWithValue }) => {
+        try {
+            await Promise.all(
+                [
+                    dbService.deletePost(postId),
+                    bucketService.deleteFile(fileId)
+                ]
+            );
+            return postId;
+        } catch (error) {
+            rejectWithValue(error.message);
+        }
+    }
+);
 
 const initialState = {
     posts: [],
@@ -135,6 +139,19 @@ const fetchPostSlice = createSlice({
                 state.authorPosts = action.payload;
             })
             .addCase(fetchAuthorPosts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(deletePost.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deletePost.fulfilled, (state, action) => {
+                state.loading = false;
+                state.posts = state.posts.filter(post => post.$id !== action.payload);
+                state.authorPosts = state.authorPosts.filter(authorPost => authorPost.$id !== action.payload);
+            })
+            .addCase(deletePost.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
