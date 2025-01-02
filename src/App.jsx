@@ -39,7 +39,7 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       });
-  });
+  }, [dispatch]);
 
   if (loading) {
     return <Loader />;
