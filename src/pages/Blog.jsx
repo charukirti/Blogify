@@ -14,6 +14,7 @@ import {
   updateLikesCount,
 } from "../store/interactionsSlice";
 import interactionService from "../services/interactionService";
+import CommentsSection from "../ui/comments/CommentsSection";
 
 export default function Blog() {
   const { id } = useParams();
@@ -98,6 +99,8 @@ export default function Blog() {
           ))}
         </div>
       )}
+
+      <CommentsSection blogId={id}/>
     </article>
   );
 }
