@@ -111,6 +111,139 @@ class InteractionService {
         }
     }
 
+    // comments
+
+    async addComment(blogId, content, parentId = null) {
+        try {
+            const user = await this.getCurrentUser();
+
+            return await databases.createDocument(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                ID.unique(),
+                {
+                    user_id: user.$id,
+                    blog_id: blogId,
+                    content: content,
+                    parent_id: parentId,
+                    created_at: this.getCurrentDate()
+                }
+            );
+        } catch (error) {
+            console.log('Appwrite service :: addComment :: error', error);
+            throw new Error('Unable to add comment');
+        }
+    }
+
+    async removeComment(commentId) {
+        try {
+            const user = await this.getCurrentUser();
+            const comment = await databases.getDocument(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                commentId,
+            )
+
+            // avoid deleting others comment
+
+            if (comment.user_id !== user.$id) {
+                throw new Error('You can delete your own comments!')
+            }
+
+            await databases.deleteDocument(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                commentId,
+            )
+            return true
+        } catch (error) {
+            console.log('Appwrite service :: removeCommentId :: error', error)
+            throw new Error('Unable to remove comment, try again later.');
+        }
+    }
+
+    async editComment(commentId, editedContent) {
+        try {
+            const user = await this.getCurrentUser()
+
+            const comment = await databases.getDocument(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                commentId,
+            )
+
+            if (comment.user_id !== user.$id) {
+                throw new Error('You can edit your own comment')
+            }
+
+            return await databases.updateDocument(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                commentId,
+                {
+                    content: editedContent,
+                }
+            )
+        } catch (error) {
+            console.log('Appwrite service :: editComment :: error', error)
+            throw new Error('Unable to edit comment, try again later')
+        }
+    }
+
+
+    async getBlogComments(blogId) {
+        try {
+            const comments = await databases.listDocuments(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                [
+                    Query.equal('blog_id', blogId),
+                    Query.orderDesc('created_at')
+                ]
+            )
+            return comments;
+        } catch (error) {
+            console.log('Appwrite service :: getBlogComments :: error', error)
+            throw new Error('Unable to fetch comments, try again later')
+        }
+    }
+
+    async getCommentsReplies(parentId) {
+        try {
+            const replies = await databases.listDocuments(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                [
+                    Query.equal('parent_id', parentId),
+                    Query.orderDesc('created_at')
+                ]
+            )
+
+            return replies;
+        } catch (error) {
+            console.log('Appwrite service :: getCommentsReplies :: error', error)
+            throw new Error('Unable to fetch replies, try again later')
+        }
+    }
+
+    async getCommentsCount(blogId) {
+        try {
+            const comments = await databases.listDocuments(
+                conf.appDatabaseID,
+                conf.commentsCollectionID,
+                [
+                    Query.equal('blog_id', blogId)
+                ]
+            )
+
+            return comments.total
+        } catch (error) {
+            console.log('Appwrite service :: getCommentsCount :: error', error)
+            return 0
+        }
+    }
+
+
 }
 
 const interactionService = new InteractionService();

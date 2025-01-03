@@ -4,6 +4,8 @@ import interactionService from "../services/interactionService";
 const initialState = {
     likesCount: {}, // blogId: number/count
     hasLiked: {}, // blogId: boolean
+    comments: {}, // blogId: array of comments
+    commentsCount: {}, // blogId: number/count
     loading: false,
     error: null,
 };
@@ -33,6 +35,34 @@ export const checkHasLiked = createAsyncThunk(
     }
 );
 
+export const fetchComments = createAsyncThunk(
+    'interactions/fetchComments',
+    async (blogId, { rejectWithValue }) => {
+        try {
+            const response = await interactionService.getBlogComments(blogId);
+            return {
+                blogId,
+                comments: response.documents,
+                total: response.total
+            };
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchCommentsCount = createAsyncThunk(
+    'interactons/fetchCommentsCount',
+    async (blogId, { rejectWithValue }) => {
+        try {
+            const total = await interactionService.getCommentsCount(blogId);
+            return { blogId, total };
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const interactionSlice = createSlice({
     name: 'interactions',
     initialState,
@@ -48,7 +78,38 @@ const interactionSlice = createSlice({
         setHasLiked: (state, action) => {
             const { blogId, hasLiked } = action.payload;
             state.hasLiked[blogId] = hasLiked;
+        },
+
+        addComment: (state, action) => {
+            const { blogId, comment } = action.payload;
+            if (!state.comments[blogId]) {
+                state.comments[blogId] = [];
+            }
+            state.comments[blogId].unshift(comment);
+
+            // update the count
+            state.commentsCount[blogId] = (state.commentsCount[blogId] || 0) + 1;
+        },
+        updateComment: (state, action) => {
+            const { blogId, commentId, content } = action.payload;
+
+            if (state.comments[blogId]) {
+                const comment = state.comments[blogId].find(c => c.$id === commentId);
+
+                if (comment) {
+                    comment.content = content;
+                }
+            }
+        },
+        deleteComment: (state, action) => {
+            const { blogId, commentId } = action.payload;
+            if (state.comments[blogId]) {
+                state.comments[blogId] = state.comments[blogId].filter(c => c.$id !== commentId);
+
+                state.commentsCount[blogId] = (state.commentsCount[blogId] || 0) - 1;
+            }
         }
+
     },
     extraReducers:
         (builder) => {
@@ -79,11 +140,44 @@ const interactionSlice = createSlice({
                 .addCase(checkHasLiked.rejected, (state, action) => {
                     state.loading = false;
                     state.error = action.payload;
+                })
+                .addCase(fetchComments.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                })
+                .addCase(fetchComments.fulfilled, (state, action) => {
+                    const { blogId, comments, total } = action.payload;
+                    state.comments[blogId] = comments;
+                    state.commentsCount[blogId] = total;
+                    state.loading = false;
+                })
+                .addCase(fetchComments.rejected, (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                })
+                .addCase(fetchCommentsCount.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                })
+                .addCase(fetchCommentsCount.fulfilled, (state, action) => {
+                    const { blogId, total } = action.payload;
+                    state.commentsCount[blogId] = total;
+                })
+                .addCase(fetchCommentsCount.rejected, (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload;
                 });
+
         },
 });
 
-export const { updateLikesCount, setHasLiked } = interactionSlice.actions;
+export const {
+    updateLikesCount,
+    setHasLiked,
+    addComment,
+    updateComment,
+    deleteComment
+} = interactionSlice.actions;
 
 export default interactionSlice.reducer;
 
