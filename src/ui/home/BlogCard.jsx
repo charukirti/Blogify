@@ -5,8 +5,6 @@ import { useEffect } from "react";
 import { fetchLikesCount } from "../../store/interactionsSlice";
 
 export default function BlogCard({ post }) {
-  console.log(post);
-
   const {
     title,
     description,
