@@ -100,7 +100,7 @@ export class DatabaseService {
                 conf.blogsCollectionID,
                 documentId
             );
-            
+
             const likes_count = await interactionService.getLikesCount(documentId);
             return {
                 ...post,
@@ -121,17 +121,19 @@ export class DatabaseService {
                 conf.blogsCollectionID,
                 queries,
             );
-            
+
             const postsWithLikes = await Promise.all(
                 posts.documents.map(async (post) => {
                     const likes_count = await interactionService.getLikesCount(post.$id);
+                    const comments_count = await interactionService.getCommentsCount(post.$id);
                     return {
                         ...post,
-                        likes_count
+                        likes_count,
+                        comments_count
                     };
                 })
             );
-            
+
             return {
                 ...posts,
                 documents: postsWithLikes
@@ -143,7 +145,7 @@ export class DatabaseService {
     }
 }
 
-    // 
+// 
 
 
 
