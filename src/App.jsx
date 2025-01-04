@@ -22,24 +22,27 @@ function App() {
   const [loading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-  useEffect(function () {
-    authservice
-      .getCurrentUser()
-      .then((userData) => {
-        if (userData) {
-          dispatch(login({ userData }));
-        } else {
-          dispatch(logout());
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        throw error;
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [dispatch]);
+  useEffect(
+    function () {
+      authservice
+        .getCurrentUser()
+        .then((userData) => {
+          if (userData) {
+            dispatch(login({ userData }));
+          } else {
+            dispatch(logout());
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          throw error;
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [dispatch]
+  );
 
   if (loading) {
     return <Loader />;
