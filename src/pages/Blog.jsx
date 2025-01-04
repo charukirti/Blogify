@@ -100,7 +100,7 @@ export default function Blog() {
         </div>
       )}
 
-      <CommentsSection blogId={id}/>
+      {post && <CommentsSection blogId={id} authorId={post.author_id} />}
     </article>
   );
 }
