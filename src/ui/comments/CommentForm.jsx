@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "../../store/interactionsSlice";
 import interactionService from "../../services/interactionService";
 
@@ -9,6 +9,7 @@ export default function CommentForm({
   onSuccess = () => {},
 }) {
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.userData);
 
   const {
     register,
@@ -26,7 +27,8 @@ export default function CommentForm({
       const response = await interactionService.addComment(
         blogId,
         data.content,
-        parentId
+        parentId,
+        currentUser?.name
       );
       dispatch(addComment({ blogId, comment: response }));
       reset();

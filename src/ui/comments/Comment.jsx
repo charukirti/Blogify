@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteComment } from "../../store/interactionsSlice";
+import { deleteComment, updateComment } from "../../store/interactionsSlice";
 import interactionService from "../../services/interactionService";
 import CommentForm from "./CommentForm";
 import EditCommentForm from "./EditCommentForm";
 
-export default function Comment({ comment, blogId, currentUserId }) {
+export default function Comment({
+  comment,
+  blogId,
+  currentUserId,
+  userName,
+  authorId,
+}) {
   const [isReplying, setIsReplying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const isAuthor = authorId ? comment.user_id === authorId : false;
 
   const dispatch = useDispatch();
 
@@ -52,10 +60,21 @@ export default function Comment({ comment, blogId, currentUserId }) {
   }
 
   return (
-    <section className="border-l-2 border-gray-200 pl-4 mb-4">
-      <div className="bg-white rounded-lg p-4">
+    <section
+      className={`border-l-2 ${
+        isAuthor ? "border-blue-500" : "border-gray-200"
+      }  pl-4 mb-4`}
+    >
+      <div className="bg-gray-800 rounded-lg p-4">
         <div className="flex justify-between items-center">
-          <div className="font-medium text-gray-400">{comment.user_id}</div>
+          <div className="flex items-center gap-2">
+            <div className="font-medium text-gray-200">{comment.username}</div>
+            {isAuthor && (
+              <span className="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
+                Author
+              </span>
+            )}
+          </div>
           {currentUserId === comment.user_id && (
             <div className="flex gap-4">
               <button
@@ -77,7 +96,7 @@ export default function Comment({ comment, blogId, currentUserId }) {
         {isEditing ? (
           <EditCommentForm comment={comment} handleEdit={handleEditComment} />
         ) : (
-          <p className="m-2 text-gray-700">{comment.content}</p>
+          <p className="m-2 text-gray-200">{comment.content}</p>
         )}
 
         {!isEditing && (
