@@ -123,6 +123,7 @@ class InteractionService {
                 ID.unique(),
                 {
                     user_id: user.$id,
+                    username: user.name,
                     blog_id: blogId,
                     content: content,
                     parent_id: parentId,
@@ -142,38 +143,38 @@ class InteractionService {
                 conf.appDatabaseID,
                 conf.commentsCollectionID,
                 commentId,
-            )
+            );
 
             // avoid deleting others comment
 
             if (comment.user_id !== user.$id) {
-                throw new Error('You can delete your own comments!')
+                throw new Error('You can delete your own comments!');
             }
 
             await databases.deleteDocument(
                 conf.appDatabaseID,
                 conf.commentsCollectionID,
                 commentId,
-            )
-            return true
+            );
+            return true;
         } catch (error) {
-            console.log('Appwrite service :: removeCommentId :: error', error)
+            console.log('Appwrite service :: removeCommentId :: error', error);
             throw new Error('Unable to remove comment, try again later.');
         }
     }
 
     async editComment(commentId, editedContent) {
         try {
-            const user = await this.getCurrentUser()
+            const user = await this.getCurrentUser();
 
             const comment = await databases.getDocument(
                 conf.appDatabaseID,
                 conf.commentsCollectionID,
                 commentId,
-            )
+            );
 
             if (comment.user_id !== user.$id) {
-                throw new Error('You can edit your own comment')
+                throw new Error('You can edit your own comment');
             }
 
             return await databases.updateDocument(
@@ -183,10 +184,10 @@ class InteractionService {
                 {
                     content: editedContent,
                 }
-            )
+            );
         } catch (error) {
-            console.log('Appwrite service :: editComment :: error', error)
-            throw new Error('Unable to edit comment, try again later')
+            console.log('Appwrite service :: editComment :: error', error);
+            throw new Error('Unable to edit comment, try again later');
         }
     }
 
@@ -200,11 +201,11 @@ class InteractionService {
                     Query.equal('blog_id', blogId),
                     Query.orderDesc('created_at')
                 ]
-            )
+            );
             return comments;
         } catch (error) {
-            console.log('Appwrite service :: getBlogComments :: error', error)
-            throw new Error('Unable to fetch comments, try again later')
+            console.log('Appwrite service :: getBlogComments :: error', error);
+            throw new Error('Unable to fetch comments, try again later');
         }
     }
 
@@ -217,12 +218,12 @@ class InteractionService {
                     Query.equal('parent_id', parentId),
                     Query.orderDesc('created_at')
                 ]
-            )
+            );
 
             return replies;
         } catch (error) {
-            console.log('Appwrite service :: getCommentsReplies :: error', error)
-            throw new Error('Unable to fetch replies, try again later')
+            console.log('Appwrite service :: getCommentsReplies :: error', error);
+            throw new Error('Unable to fetch replies, try again later');
         }
     }
 
@@ -234,12 +235,12 @@ class InteractionService {
                 [
                     Query.equal('blog_id', blogId)
                 ]
-            )
+            );
 
-            return comments.total
+            return comments.total;
         } catch (error) {
-            console.log('Appwrite service :: getCommentsCount :: error', error)
-            return 0
+            console.log('Appwrite service :: getCommentsCount :: error', error);
+            return 0;
         }
     }
 
