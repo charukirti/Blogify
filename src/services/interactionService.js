@@ -244,6 +244,61 @@ class InteractionService {
         }
     }
 
+    async incrementViewsCount(blogId) {
+        try {
+            const existingViews = await this.getViewsCount(blogId);
+
+            if (existingViews) {
+                return await databases.updateDocument(
+                    conf.appDatabaseID,
+                    conf.viewsCollectionID,
+                    existingViews.$id,
+                    {
+                        views: existingViews.views + 1,
+                        lastViewed: this.getCurrentDate()
+                    }
+                );
+            } else {
+                return await databases.createDocument(
+                    conf.appDatabaseID,
+                    conf.viewsCollectionID,
+                    blogId,
+                    {
+                        blog_id: blogId,
+                        views: 1,
+                        lastViewed: this.getCurrentDate()
+                    }
+                );
+            }
+
+        } catch (error) {
+            console.log('Error in incrementing views', error);
+            throw new Error('Error in incrementing views');
+        }
+    }
+
+    async getViewsCount(blogId) {
+        try {
+            const data = await databases.listDocuments(
+                conf.appDatabaseID,
+                conf.viewsCollectionID,
+                [
+                    Query.equal('blog_id', blogId)
+                ]
+            );
+
+            return data.documents.length > 0 ? data.documents[0] : null;
+        } catch (error) {
+            if (error.code === 404) {
+                return null;
+            }
+            console.error('Error getting view count:', error);
+            throw error;
+        }
+    }
+
+
+
 
 }
 

@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import interactionService from "../services/interactionService";
 
 const initialState = {
-    likesCount: {}, // blogId: number/count
-    hasLiked: {}, // blogId: boolean
-    comments: {}, // blogId: array of comments
-    commentsCount: {}, // blogId: number/count
+    likesCount: {},
+    hasLiked: {},
+    comments: {},
+    commentsCount: {},
+    viewsCount: 0,
     loading: false,
     error: null,
 };
@@ -63,6 +64,15 @@ export const fetchCommentsCount = createAsyncThunk(
     }
 );
 
+export const fetchViews = (blogId) => async (dispatch) => {
+    try {
+        const total = await interactionService.getViewsCount(blogId);
+        dispatch(setViewsCount(total?.views || 0));
+    } catch (error) {
+        dispatch(setViewsCount(0));
+        console.log('Error while fetching views', error.message);
+    }
+};
 const interactionSlice = createSlice({
     name: 'interactions',
     initialState,
@@ -108,6 +118,9 @@ const interactionSlice = createSlice({
 
                 state.commentsCount[blogId] = (state.commentsCount[blogId] || 0) - 1;
             }
+        },
+        setViewsCount: (state, action) => {
+            state.viewsCount = action.payload;
         }
 
     },
@@ -167,7 +180,6 @@ const interactionSlice = createSlice({
                     state.loading = false;
                     state.error = action.payload;
                 });
-
         },
 });
 
@@ -176,7 +188,8 @@ export const {
     setHasLiked,
     addComment,
     updateComment,
-    deleteComment
+    deleteComment,
+    setViewsCount
 } = interactionSlice.actions;
 
 export default interactionSlice.reducer;
