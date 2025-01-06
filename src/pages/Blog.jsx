@@ -6,32 +6,38 @@ import bucketService from "../services/bucketService";
 import { useEffect } from "react";
 import Loader from "../ui/Loader";
 import { htmlParserOptions } from "../utils/htmlCustomParser";
+import CommentsSection from "../ui/comments/CommentsSection";
 import LikeButton from "../ui/LikeButton";
+import { Eye } from "lucide-react";
+import interactionService from "../services/interactionService";
 import {
   checkHasLiked,
   fetchLikesCount,
+  fetchViews,
   setHasLiked,
   updateLikesCount,
 } from "../store/interactionsSlice";
-import interactionService from "../services/interactionService";
-import CommentsSection from "../ui/comments/CommentsSection";
 
 export default function Blog() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { post, loading } = useSelector((state) => state.posts);
   const { userData } = useSelector((state) => state.auth);
-  const { hasLiked, likesCount } = useSelector((state) => state.interactions);
-
+  const { hasLiked, likesCount, viewsCount } = useSelector(
+    (state) => state.interactions
+  );
+  console.log(post);
   const parsedContent = post?.content
     ? parse(post.content, htmlParserOptions)
     : "";
 
-  useEffect(() => {
-    if (id) dispatch(fetchPost(id));
-    dispatch(fetchLikesCount(id));
-    dispatch(checkHasLiked({ blogId: id, userId: userData?.$id }));
-  }, [id, dispatch, userData]);
+  async function handleToggleViews(blogId) {
+    try {
+      await interactionService.incrementViewsCount(blogId);
+    } catch (error) {
+      console.log("There was an error while incrementing views", error);
+    }
+  }
 
   async function handleToggleLike() {
     try {
@@ -49,6 +55,14 @@ export default function Blog() {
     }
   }
 
+  useEffect(() => {
+    if (id) dispatch(fetchPost(id));
+    dispatch(fetchLikesCount(id));
+    dispatch(checkHasLiked({ blogId: id, userId: userData?.$id }));
+    handleToggleViews(id);
+    dispatch(fetchViews(id));
+  }, [id, dispatch, userData]);
+
   if (loading) return <Loader />;
 
   return (
@@ -65,12 +79,19 @@ export default function Blog() {
               Published on {new Date(post?.$createdAt).toLocaleDateString()}
             </time>
           </div>
-          <LikeButton
-            handleToggleLike={handleToggleLike}
-            hasLiked={hasLiked}
-            likesCount={likesCount}
-            id={post?.$id}
-          />
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-gray-200">
+              <Eye />
+              <span>{viewsCount}</span>
+            </div>
+
+            <LikeButton
+              handleToggleLike={handleToggleLike}
+              hasLiked={hasLiked}
+              likesCount={likesCount}
+              id={post?.$id}
+            />
+          </div>
         </div>
       </header>
 
