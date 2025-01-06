@@ -1,9 +1,5 @@
 import { Link } from "react-router";
 import bucketService from "../../services/bucketService";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchLikesCount } from "../../store/interactionsSlice";
-
 export default function BlogCard({ post }) {
   const {
     title,
