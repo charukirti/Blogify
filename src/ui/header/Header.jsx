@@ -10,9 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const menuItems = [
-    { title: "Write", path: "/create" },
-  ];
+  const menuItems = [{ title: "Write", path: "/create" }];
 
   const dropdownItems = [
     { title: "Profile", path: "/profile" },
@@ -21,8 +19,8 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-neutral-800 py-4">
-      <nav className="max-w-7xl mx-auto px-4">
+    <header className="max-w-7xl mt-4 bg-neutral-800 py-4 m-auto rounded-full">
+      <nav className="px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-6">
             <Link to="/" className="text-2xl md:text-3xl font-bold text-white">
