@@ -1,8 +1,8 @@
-import bucketService from "../../services/bucketService";
-import { Edit, Trash } from "lucide-react";
-import DeletePostModal from "./DeletePostModal";
 import { useState } from "react";
 import { Link } from "react-router";
+import bucketService from "../../services/bucketService";
+import DeletePostModal from "./DeletePostModal";
+import { Edit, Trash } from "lucide-react";
 
 export default function AuthorPostCard({ post }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,8 +41,8 @@ export default function AuthorPostCard({ post }) {
           ))}
 
           <div className="flex items-center space-x-4">
-            <span className="text-sm">❤️ {post.likes_count} </span>
-            <span className="text-sm">💬 2</span>
+            <span className="text-sm">❤️ {post.likes_count || 0} </span>
+            <span className="text-sm">💬 {post.comments_count || 0}</span>
           </div>
         </div>
         <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
