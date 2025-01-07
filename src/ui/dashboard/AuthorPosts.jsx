@@ -7,7 +7,7 @@ import AuthorPostCard from "./AuthorPostCard";
 export default function AuthorPosts() {
   const { authorPosts, loading, error } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1); 
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchAuthorPosts(currentPage));
