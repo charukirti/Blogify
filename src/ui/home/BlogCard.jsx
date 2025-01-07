@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import bucketService from "../../services/bucketService";
-export default function BlogCard({ post }) {
+import { useMemo, memo } from "react";
+const BlogCard = memo( function BlogCard({ post }) {
   const {
     title,
     description,
@@ -11,11 +12,16 @@ export default function BlogCard({ post }) {
     comments_count,
   } = post;
 
+  const imgUrl = useMemo(
+    () => bucketService.getFilePreview(featuredImage),
+    [featuredImage]
+  );
+
   return (
     <div className="bg-[#95a5a6]  p-2 rounded-lg shadow-lg hover:shadow-xl transition ">
       <Link to={`/blog/${post.$id}`}>
         <img
-          src={bucketService.getFilePreview(featuredImage)}
+          src={imgUrl}
           alt={title}
           className="w-full h-64 object-cover rounded-lg"
         />
@@ -53,4 +59,6 @@ export default function BlogCard({ post }) {
       </div>
     </div>
   );
-}
+})
+
+export default BlogCard
