@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
 import { fetchPost } from "../store/fetchPostSlice";
 import bucketService from "../services/bucketService";
-import { useEffect } from "react";
+import interactionService from "../services/interactionService";
 import Loader from "../ui/Loader";
 import { htmlParserOptions } from "../utils/htmlCustomParser";
 import CommentsSection from "../ui/comments/CommentsSection";
 import LikeButton from "../ui/LikeButton";
 import { Eye } from "lucide-react";
-import interactionService from "../services/interactionService";
 import {
   checkHasLiked,
   fetchLikesCount,
@@ -56,12 +56,30 @@ export default function Blog() {
   }
 
   useEffect(() => {
-    if (id) dispatch(fetchPost(id));
-    dispatch(fetchLikesCount(id));
-    dispatch(checkHasLiked({ blogId: id, userId: userData?.$id }));
-    handleToggleViews(id);
-    dispatch(fetchViews(id));
-  }, [id, dispatch, userData]);
+    if (!id) return;
+    async function fetchPostData() {
+      try {
+        await Promise.all([
+          dispatch(fetchPost(id)),
+          dispatch(fetchLikesCount(id)),
+          handleToggleViews(id),
+          dispatch(fetchViews(id)),
+        ]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+
+    fetchPostData()
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (!id || !userData.$id) return;
+
+    dispatch(checkHasLiked({
+      blogId: id, userId: userData.$id
+    }))
+  },[dispatch, id, userData.$id])
 
   if (loading) return <Loader />;
 
