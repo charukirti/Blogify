@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPosts } from "../store/fetchPostSlice";
 import BlogCard from "../ui/home/BlogCard";
 import TagsSection from "../ui/home/TagsSection";
-import { useDispatch, useSelector } from "react-redux";
 import Loader from "../ui/Loader";
-import { useState } from "react";
+
 
 export default function Blogs() {
   const dispatch = useDispatch();
@@ -15,13 +15,15 @@ export default function Blogs() {
     dispatch(fetchAllPosts());
   }, [dispatch]);
 
-  const handleTagClick = (tag) => {
+  const handleTagClick =useCallback( (tag) => {
     setSelectedTag(tag === selectedTag ? null : tag);
-  };
+  }, [selectedTag]);
 
-  const filteredPosts = selectedTag
+  const filteredPosts = useMemo(() =>selectedTag
     ? posts?.filter((post) => post.tags?.includes(selectedTag))
-    : posts;
+    : posts,
+    [selectedTag, posts]
+  );
 
   if (loading) {
     return <Loader />;
