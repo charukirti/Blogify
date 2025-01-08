@@ -9,7 +9,7 @@ class InteractionService {
         return new Date().toISOString();
     }
 
-    
+
 
     async addLike(blogId) {
         try {
@@ -39,7 +39,7 @@ class InteractionService {
     async removeLike(blogId) {
         try {
 
-            const user = await authservice.getCurrentUser()
+            const user = await authservice.getCurrentUser();
             if (!user) throw new Error('User not found');
 
 
@@ -194,7 +194,7 @@ class InteractionService {
                     Query.orderDesc('created_at')
                 ]
             );
-           
+
             return comments;
         } catch (error) {
             console.log('Appwrite service :: getBlogComments :: error', error);
@@ -213,7 +213,7 @@ class InteractionService {
                 ]
             );
 
-           
+
 
             return replies;
         } catch (error) {
@@ -243,16 +243,16 @@ class InteractionService {
             const existingViews = await this.getViewsCount(blogId);
 
             if (existingViews) {
-                console.log('views increment call')
+                console.log('views increment call');
 
-                const lastViewed = new Date(existingViews.lastViewed)
+                const lastViewed = new Date(existingViews.lastViewed);
                 const now = new Date();
 
-                const timeDifference = (now - lastViewed) / (1000 * 60)
+                const timeDifference = (now - lastViewed) / (1000 * 60);
 
                 if (timeDifference < 30) {
-                    console.log('Views not incremented, wait for 30 minutes')
-                    return existingViews
+                    console.log('Views not incremented, wait for 30 minutes');
+                    return existingViews;
                 }
 
                 return await databases.updateDocument(
@@ -292,7 +292,7 @@ class InteractionService {
                     Query.equal('blog_id', blogId)
                 ]
             );
-            console.log('views count call')
+            console.log('views count call');
 
             return data.documents.length > 0 ? data.documents[0] : null;
         } catch (error) {
