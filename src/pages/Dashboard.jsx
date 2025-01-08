@@ -1,5 +1,6 @@
-import { useState } from "react";
-import AuthorPosts from "../ui/dashboard/AuthorPosts";
+import { lazy, Suspense, useState } from "react";
+import Loader from "../ui/Loader";
+const AuthorPosts = lazy(() => import("../ui/dashboard/AuthorPosts"));
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Posts");
@@ -7,7 +8,11 @@ export default function Dashboard() {
   const renderTabContent = () => {
     switch (activeTab) {
       case "Posts":
-        return <AuthorPosts />;
+        return (
+          <Suspense fallback={<Loader />}>
+            <AuthorPosts />
+          </Suspense>
+        );
       case "Analytics":
         return <div>Your analytics data goes here...</div>;
       default:
