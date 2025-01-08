@@ -26,7 +26,8 @@ export default function Blog() {
   const { hasLiked, likesCount, viewsCount } = useSelector(
     (state) => state.interactions
   );
-  console.log(post);
+
+  
   const parsedContent = post?.content
     ? parse(post.content, htmlParserOptions)
     : "";
