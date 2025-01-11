@@ -10,7 +10,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Blog = lazy(() => import("./pages/Blog"));
 const SignIn = lazy(() => import("./ui/auth/SignIn"));
 const SignUp = lazy(() => import("./ui/auth/SignUp"));
-const Analytics = lazy(() => import("./ui/analytics/Analytics"));
+const Analytics = lazy(() => import("./ui/dashboard/Analytics/Analytics"));
 const CreateBlog = lazy(() => import("./ui/blogs/CreateBlog"));
 const ProtectedRoute = lazy(() => import("./ui/ProtectedRoute"));
 const Profile = lazy(() => import("./pages/Profile"));
