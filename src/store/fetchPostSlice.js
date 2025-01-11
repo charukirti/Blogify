@@ -68,6 +68,22 @@ export const fetchAuthorPosts = createAsyncThunk(
     }
 );
 
+export const fetchAuthorPostsIds = createAsyncThunk(
+    'post/fetchAuthorPostsIds',
+    async (_, { rejectWithValue }) => {
+        try {
+            const user = await authservice.getCurrentUser();
+            const posts = await dbService.getPosts([Query.equal('author_id', user.$id)]);
+
+            const postIds = posts.documents.map(post => post.$id);
+
+            return postIds;
+        } catch (error) {
+            rejectWithValue(error.message);
+        }
+    }
+);
+
 export const deletePost = createAsyncThunk(
     'posts/deletePost',
     async ({ postId, fileId }, { rejectWithValue }) => {
@@ -89,6 +105,7 @@ const initialState = {
     posts: [],
     post: null,
     authorPosts: [],
+    authorPostsIds: [],
     loading: false,
     error: null
 };
@@ -141,6 +158,18 @@ const fetchPostSlice = createSlice({
             .addCase(fetchAuthorPosts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(fetchAuthorPostsIds.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchAuthorPostsIds.fulfilled, (state, action) => {
+                state.loading = false;
+                state.authorPostsIds = action.payload;
+            })
+            .addCase(fetchAuthorPostsIds.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             })
             .addCase(deletePost.pending, (state) => {
                 state.loading = true;
