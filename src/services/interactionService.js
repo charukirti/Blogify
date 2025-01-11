@@ -1,5 +1,5 @@
 import { Query } from "appwrite";
-import { databases, account, ID } from "./appwrite";
+import { databases, ID } from "./appwrite";
 import conf from "../conf/conf";
 import authservice from "./auth";
 
@@ -8,8 +8,6 @@ class InteractionService {
     getCurrentDate() {
         return new Date().toISOString();
     }
-
-
 
     async addLike(blogId) {
         try {
@@ -213,8 +211,6 @@ class InteractionService {
                 ]
             );
 
-
-
             return replies;
         } catch (error) {
             console.log('Appwrite service :: getCommentsReplies :: error', error);
@@ -241,19 +237,47 @@ class InteractionService {
     async incrementViewsCount(blogId) {
         try {
             const existingViews = await this.getViewsCount(blogId);
+            const currentDate = new Date();
+            const todayKey = currentDate.toISOString().split('T')[0];
+
+            const getDayCount = (viewHistory, date) => {
+                const entry = viewHistory.find(e => e.startsWith(date));
+                return entry ? parseInt(entry.split(':')[1]) : 0;
+            };
 
             if (existingViews) {
-                console.log('views increment call');
-
                 const lastViewed = new Date(existingViews.lastViewed);
-                const now = new Date();
+                const timeDefference = (currentDate - lastViewed) / (1000 * 60);
 
-                const timeDifference = (now - lastViewed) / (1000 * 60);
-
-                if (timeDifference < 30) {
-                    console.log('Views not incremented, wait for 30 minutes');
+                if (timeDefference < 1) {
+                    console.log('Wait for 1 minute for view count change');
                     return existingViews;
                 }
+
+                let viewHistory = existingViews.viewHistory || [];
+
+
+                const existingCount = getDayCount(viewHistory, todayKey);
+                const todayEntry = `${todayKey}:${existingCount + 1}`;
+                const existingTodayIndex = viewHistory.findIndex(entry => entry.startsWith(todayKey));
+
+                if (existingTodayIndex !== -1) {
+
+                    viewHistory[existingTodayIndex] = todayEntry;
+                } else {
+
+                    viewHistory.push(todayEntry);
+                }
+
+
+                viewHistory = viewHistory
+                    .filter(entry => {
+                        const entryDate = new Date(entry.split(':')[0]);
+                        const thirtyDaysAgo = new Date();
+                        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                        return entryDate >= thirtyDaysAgo;
+                    })
+                    .sort((a, b) => new Date(a.split(':')[0]) - new Date(b.split(':')[0]));
 
                 return await databases.updateDocument(
                     conf.appDatabaseID,
@@ -261,27 +285,30 @@ class InteractionService {
                     existingViews.$id,
                     {
                         views: existingViews.views + 1,
-                        lastViewed: this.getCurrentDate()
+                        lastViewed: this.getCurrentDate(),
+                        viewHistory: viewHistory
                     }
                 );
             } else {
+
                 return await databases.createDocument(
                     conf.appDatabaseID,
                     conf.viewsCollectionID,
-                    blogId,
+                    ID.unique(),
                     {
                         blog_id: blogId,
                         views: 1,
-                        lastViewed: this.getCurrentDate()
+                        lastViewed: this.getCurrentDate(),
+                        viewHistory: [`${todayKey}:1`]
                     }
                 );
             }
-
         } catch (error) {
             console.log('Error in incrementing views', error);
             throw new Error('Error in incrementing views');
         }
     }
+
 
     async getViewsCount(blogId) {
         try {
@@ -292,7 +319,6 @@ class InteractionService {
                     Query.equal('blog_id', blogId)
                 ]
             );
-            console.log('views count call');
 
             return data.documents.length > 0 ? data.documents[0] : null;
         } catch (error) {
@@ -303,9 +329,6 @@ class InteractionService {
             throw error;
         }
     }
-
-
-
 
 }
 
