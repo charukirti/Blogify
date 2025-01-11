@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from "react";
 import Loader from "../ui/Loader";
+import Analytics from "../ui/dashboard/Analytics/Analytics";
 const AuthorPosts = lazy(() => import("../ui/dashboard/AuthorPosts"));
 
 export default function Dashboard() {
@@ -14,7 +15,7 @@ export default function Dashboard() {
           </Suspense>
         );
       case "Analytics":
-        return <div>Your analytics data goes here...</div>;
+        return <Analytics/>;
       default:
         return (
           <p className="text-base lg:text-2xl text-gray-200">
