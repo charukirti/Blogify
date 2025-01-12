@@ -3,6 +3,7 @@ import dbService from "../services/DatabaseService";
 import authservice from "../services/auth";
 import { Query } from "appwrite";
 import bucketService from "../services/bucketService";
+import interactionService from "../services/interactionService";
 
 export const fetchPostWithAuthor = createAsyncThunk(
     'posts/fetchPostWithAuthor',
@@ -91,7 +92,8 @@ export const deletePost = createAsyncThunk(
             await Promise.all(
                 [
                     dbService.deletePost(postId),
-                    bucketService.deleteFile(fileId)
+                    bucketService.deleteFile(fileId),
+                    interactionService.deleteInteractions(postId)
                 ]
             );
             return postId;
