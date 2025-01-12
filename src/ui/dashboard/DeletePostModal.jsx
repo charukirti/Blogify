@@ -1,22 +1,20 @@
 import { useDispatch } from "react-redux";
-import {deletePost} from '../../store/fetchPostSlice'
+import { deletePost } from "../../store/fetchPostSlice";
 
-export default function DeletePostModal({
-  handleShowDeleteModal,
-  post
-}) {
-
-  const dispatch = useDispatch()
+export default function DeletePostModal({ handleShowDeleteModal, post }) {
+  const dispatch = useDispatch();
 
   async function handleDelete() {
     try {
-      await dispatch(deletePost({
-        postId: post.$id,
-        fileId: post.featuredImage
-      })).unwrap()
-      handleShowDeleteModal(false)
+      await dispatch(
+        deletePost({
+          postId: post.$id,
+          fileId: post.featuredImage,
+        })
+      ).unwrap();
+      handleShowDeleteModal(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   return (
@@ -24,8 +22,9 @@ export default function DeletePostModal({
       <div className="bg-white rounded-lg p-6 max-w-sm w-full">
         <h3 className="text-lg font-semibold mb-4">Confirm Delete</h3>
         <p className="text-gray-600 mb-6">
-          Are you sure you want to delete <span className="font-extrabold">{post.title}</span>? This action cannot be
-          undone.
+          Are you sure you want to delete{" "}
+          <span className="font-extrabold">{post.title}</span>? This action
+          cannot be undone.
         </p>
         <div className="flex justify-end gap-4">
           <button
