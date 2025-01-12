@@ -330,6 +330,69 @@ class InteractionService {
         }
     }
 
+    async deleteDocuments(collectionId, queries) {
+        try {
+            const { documents } = await databases.listDocuments(
+                conf.appDatabaseID,
+                collectionId,
+                queries,
+            );
+            return await Promise.all(documents.map(doc => databases.deleteDocument(
+                conf.appDatabaseID,
+                collectionId,
+                doc.$id
+            )));
+        } catch (error) {
+            console.log('Error deleting document', error);
+        }
+    }
+
+
+    async deleteComments(blogId) {
+        try {
+            return await this.deleteDocuments(
+                conf.commentsCollectionID,
+                [Query.equal('blog_id', blogId)]
+            );
+        } catch (error) {
+            console.log('Error deleting comments', error);
+        }
+    }
+
+    async deleteLikes(blogId) {
+        try {
+            return await this.deleteDocuments(
+                conf.likesCollectionID,
+                [Query.equal('blog_id', blogId)]
+            );
+        } catch (error) {
+            console.log('Error deleting Likes', error);
+        }
+    }
+
+    async deleteViews(blogId) {
+        try {
+            return await this.deleteDocuments(
+                conf.viewsCollectionID,
+                [Query.equal('blog_id', blogId)]
+            );
+        } catch (error) {
+            console.log('Error deleting views', error);
+        }
+    }
+
+    async deleteInteractions(blogId) {
+        try {
+            await Promise.all([
+
+                this.deleteComments(blogId),
+                this.deleteLikes(blogId),
+                this.deleteViews(blogId)
+            ]);
+        } catch (error) {
+            console.log('Error deleting interactions', error);
+        }
+    }
 }
 
 const interactionService = new InteractionService();
