@@ -108,7 +108,7 @@ export default function Analytics() {
             color={"#8884d8"}
           />
         </div>
-        <div className=" h-[300px] w-full">
+        <div className="h-[300px] w-full">
           <AnalyticsGraph
             data={graphData}
             dataKey={"likes"}
