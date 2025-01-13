@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { fetchAuthorPosts } from "../../store/fetchPostSlice";
 import { Link } from "react-router";
 import Loader from "../Loader";
 
-import AuthorPostCard from "./AuthorPostCard";
+const AuthorPostCard = lazy(() => import("./AuthorPostCard"));
 export default function AuthorPosts() {
   const { authorPosts, loading, error } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -31,7 +31,9 @@ export default function AuthorPosts() {
 
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {authorPosts.map((post) => (
-          <AuthorPostCard post={post} key={post.$id} />
+          <Suspense fallback={<Loader />} key={post.$id}>
+            <AuthorPostCard post={post}  />
+          </Suspense>
         ))}
       </main>
     </section>
