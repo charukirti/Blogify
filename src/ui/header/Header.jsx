@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { avatar } from "../../services/appwrite";
 import LogoutButton from "./LogoutButton";
 import SearchBar from "./SearchBar";
@@ -9,17 +9,32 @@ export default function Header() {
   const { status, userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const menuItems = [{ title: "Write", path: "/create" }];
 
   const dropdownItems = [
     { title: "Profile", path: "/profile" },
     { title: "Dashboard", path: "/dashboard" },
-    { title: "Settings", path: "/settings" },
   ];
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    if (isProfileOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isProfileOpen]);
+
   return (
-    <header className="max-w-7xl mt-4 bg-neutral-800 py-4 m-auto rounded-full">
+    <header className="max-w-7xl mt-4 bg-neutral-800 py-4 m-auto rounded-full sticky top-0">
       <nav className="px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-6">
@@ -43,7 +58,7 @@ export default function Header() {
               ))}
 
             {status ? (
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="flex items-center space-x-2"
@@ -58,25 +73,33 @@ export default function Header() {
                 </button>
 
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-10">
-                    <div className="p-2 border-b border-neutral-700">
-                      <p className="text-sm text-white">{userData?.name}</p>
-                      <p className="text-xs text-gray-400">{userData?.email}</p>
+                  <>
+                    <div
+                      className="fixed inset-0 bg-black/40 backdrop-blur-0 "
+                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    />
+                    <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-10">
+                      <div className="p-2 border-b border-neutral-700">
+                        <p className="text-sm text-white">{userData?.name}</p>
+                        <p className="text-xs text-gray-400">
+                          {userData?.email}
+                        </p>
+                      </div>
+                      {dropdownItems.map((item) => (
+                        <button
+                          key={item.title}
+                          onClick={() => {
+                            navigate(item.path);
+                            setIsProfileOpen(false);
+                          }}
+                          className="w-full my-1 p-2 rounded-md text-left text-gray-300 hover:bg-neutral-700"
+                        >
+                          {item.title}
+                        </button>
+                      ))}
+                      <LogoutButton />
                     </div>
-                    {dropdownItems.map((item) => (
-                      <button
-                        key={item.title}
-                        onClick={() => {
-                          navigate(item.path);
-                          setIsProfileOpen(false);
-                        }}
-                        className="w-full my-1 p-2 rounded-md text-left text-gray-300 hover:bg-neutral-700"
-                      >
-                        {item.title}
-                      </button>
-                    ))}
-                    <LogoutButton />
-                  </div>
+                  </>
                 )}
               </div>
             ) : (
