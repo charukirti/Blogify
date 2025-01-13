@@ -1,4 +1,4 @@
-import PostForm from "../postForm/PostForm";
+import PostForm from "./PostForm";
 
 export default function CreateBlog() {
   return (

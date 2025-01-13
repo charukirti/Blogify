@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { lazy, Suspense, useEffect } from "react";
 import { fetchAuthorPosts } from "../../store/fetchPostSlice";
 import { Link } from "react-router";
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 
 const AuthorPostCard = lazy(() => import("./AuthorPostCard"));
 export default function AuthorPosts() {

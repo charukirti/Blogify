@@ -112,7 +112,7 @@ export default function PostForm({ post }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(submit)} className="w-full">
+      <form onSubmit={handleSubmit(submit)} className="w-full space-y-4">
         <div className="grid grid-cols-1  gap-8">
           <div className="space-y-6">
             <div className="space-y-2">

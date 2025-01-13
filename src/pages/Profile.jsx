@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import authservice from "../services/auth";
 import { useSelector } from "react-redux";
 import { avatar } from "../services/appwrite";
-import Loader from "../ui/Loader";
+import Loader from "../components/Loader";
 
 export default function Profile() {
   const { status, userData } = useSelector((state) => state.auth);

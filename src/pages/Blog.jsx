@@ -5,10 +5,10 @@ import parse from "html-react-parser";
 import { fetchPost } from "../store/fetchPostSlice";
 import bucketService from "../services/bucketService";
 import interactionService from "../services/interactionService";
-import Loader from "../ui/Loader";
+import Loader from "../components/Loader";
 import { htmlParserOptions } from "../utils/htmlCustomParser";
-import CommentsSection from "../ui/comments/CommentsSection";
-import LikeButton from "../ui/LikeButton";
+import CommentsSection from "../feat/comments/CommentsSection";
+import LikeButton from "../components/LikeButton";
 import { Eye } from "lucide-react";
 import {
   checkHasLiked,

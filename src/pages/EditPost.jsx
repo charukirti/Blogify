@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { fetchPost } from "../store/fetchPostSlice";
 import { useDispatch } from "react-redux";
-import PostForm from "../ui/postForm/PostForm";
+import PostForm from "../components/postForm/PostForm";
 
 export default function EditPost() {
   const [post, setPost] = useState(null);

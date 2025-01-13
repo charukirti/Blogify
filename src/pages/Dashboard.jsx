@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from "react";
-import Loader from "../ui/Loader";
-import Analytics from "../ui/dashboard/Analytics/Analytics";
-const AuthorPosts = lazy(() => import("../ui/dashboard/AuthorPosts"));
+import Loader from "../components/Loader";
+import Analytics from "../feat/Analytics/Analytics";
+const AuthorPosts = lazy(() => import("../feat/dashboard/AuthorPosts"));
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("Posts");
@@ -15,7 +15,7 @@ export default function Dashboard() {
           </Suspense>
         );
       case "Analytics":
-        return <Analytics/>;
+        return <Analytics />;
       default:
         return (
           <p className="text-base lg:text-2xl text-gray-200">

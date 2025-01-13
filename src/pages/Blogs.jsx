@@ -8,9 +8,9 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPosts } from "../store/fetchPostSlice";
-const BlogCard = lazy(() => import("../ui/home/BlogCard"));
-const TagsSection = lazy(() => import("../ui/home/TagsSection"));
-import Loader from "../ui/Loader";
+const BlogCard = lazy(() => import("../components/home/BlogCard"));
+const TagsSection = lazy(() => import("../components/home/TagsSection"));
+import Loader from "../components/Loader";
 
 export default function Blogs() {
   const dispatch = useDispatch();

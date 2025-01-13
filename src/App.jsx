@@ -3,18 +3,17 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { login, logout } from "./store/authSlice";
 import { useDispatch } from "react-redux";
 import authservice from "./services/auth";
-import Loader from "./ui/Loader";
-import AppLayout from './ui/AppLayout'
+import Loader from "./components/Loader";
+import AppLayout from "./components/layout/AppLayout";
 const Blogs = lazy(() => import("./pages/Blogs"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Blog = lazy(() => import("./pages/Blog"));
-const SignIn = lazy(() => import("./ui/auth/SignIn"));
-const SignUp = lazy(() => import("./ui/auth/SignUp"));
-const Analytics = lazy(() => import("./ui/dashboard/Analytics/Analytics"));
-const CreateBlog = lazy(() => import("./ui/blogs/CreateBlog"));
-const ProtectedRoute = lazy(() => import("./ui/ProtectedRoute"));
+const SignIn = lazy(() => import("./feat/auth/SignIn"));
+const SignUp = lazy(() => import("./feat/auth/SignUp"));
+const CreateBlog = lazy(() => import("./feat/blogs/CreateBlog"));
+const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 const Profile = lazy(() => import("./pages/Profile"));
-const PageNotFound = lazy(() => import("./ui/PageNotFound"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const EditPost = lazy(() => import("./pages/EditPost"));
 
 function App() {
@@ -110,14 +109,6 @@ function App() {
               }
             />
 
-            <Route
-              path="/dashboard/analytics"
-              element={
-                <ProtectedRoute isAuthenticated>
-                  <Analytics />
-                </ProtectedRoute>
-              }
-            />
             <Route
               path="/profile"
               element={

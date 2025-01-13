@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAuthorPostsIds } from "../../../store/fetchPostSlice";
-import analyticsService from "../../../services/AnalyticsService";
+import { fetchAuthorPostsIds } from "../../store/fetchPostSlice";
+import analyticsService from "../../services/AnalyticsService";
 import AnalyticsCard from "./AnalyticsCard";
 import {
   Area,
