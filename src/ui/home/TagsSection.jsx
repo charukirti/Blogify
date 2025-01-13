@@ -1,8 +1,12 @@
 export default function TagsSection({ posts, onTagClick }) {
   const uniqueTags = [...new Set(posts.flatMap((post) => post.tags))];
+  console.log("TagsSection rendered", uniqueTags);
+
   return (
-    <section className="mb-3 flex items-center">
-      <h2 className="text-2xl font-bold mb-4 text-gray-200 mr-2">Filter by Tags</h2>
+    <section className="mb-3 flex items-center lg:flex-col ">
+      <h1 className="text-xl lg:text-3xl text-left mb-4 text-gray-200 mr-2 ">
+        Filter by Tags
+      </h1>
       <div className="flex flex-wrap gap-2 items-center">
         {uniqueTags.map((tag) => (
           <button
