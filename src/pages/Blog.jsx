@@ -23,11 +23,12 @@ export default function Blog() {
   const dispatch = useDispatch();
   const { post, loading } = useSelector((state) => state.posts);
   const { userData } = useSelector((state) => state.auth);
-  const { hasLiked, likesCount, viewsCount } = useSelector(
-    (state) => state.interactions
+  const { hasLiked, likesCount } = useSelector((state) => state.interactions);
+
+  const viewsCount = useSelector(
+    (state) => state.interactions.viewsCount[post.$id] || 0
   );
 
-  
   const parsedContent = post?.content
     ? parse(post.content, htmlParserOptions)
     : "";
@@ -71,23 +72,28 @@ export default function Blog() {
       }
     }
 
-    fetchPostData()
+    fetchPostData();
   }, [id, dispatch]);
 
   useEffect(() => {
     if (!id || !userData.$id) return;
 
-    dispatch(checkHasLiked({
-      blogId: id, userId: userData.$id
-    }))
-  },[dispatch, id, userData.$id])
+    dispatch(
+      checkHasLiked({
+        blogId: id,
+        userId: userData.$id,
+      })
+    );
+  }, [dispatch, id, userData.$id]);
 
   if (loading) return <Loader />;
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-gray-100">{post?.title}</h1>
+        <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-100">
+          {post?.title}
+        </h1>
         <div className="flex items-center justify-between">
           <div>
             <p className="font-medium text-gray-200">
@@ -118,7 +124,7 @@ export default function Blog() {
         <img
           src={bucketService.getFilePreview(post.featuredImage)}
           alt={post.title}
-          className="w-full h-[480px] object-fill rounded-md mb-8"
+          className="w-full md:h-[480px] object-fill rounded-md mb-8"
         />
       )}
 
