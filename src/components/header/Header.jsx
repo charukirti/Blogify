@@ -34,8 +34,8 @@ export default function Header() {
   }, [isProfileOpen]);
 
   return (
-    <header className="max-w-7xl mt-4 bg-neutral-800 py-4 m-auto rounded-full sticky top-4 z-40">
-      <nav className="px-4">
+    <header className="sticky top-0 z-40 bg-neutral-800 py-4 max-w-[90rem] mx-auto rounded-full">
+      <nav className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-6">
             <Link to="/" className="text-2xl md:text-3xl font-bold text-white">
@@ -45,7 +45,7 @@ export default function Header() {
             <SearchBar />
           </div>
 
-          <div className=" flex items-center gap-6">
+          <div className="flex items-center gap-6">
             {status &&
               menuItems.map((item) => (
                 <button
@@ -75,10 +75,10 @@ export default function Header() {
                 {isProfileOpen && (
                   <>
                     <div
-                      className="fixed inset-0 bg-black/40 backdrop-blur-0"
+                      className="fixed inset-0 bg-black/40 backdrop-blur-sm"
                       onClick={() => setIsProfileOpen(!isProfileOpen)}
                     />
-                    <div className="absolute right-0 mt-8 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-50">
                       <div className="p-2 border-b border-neutral-700">
                         <p className="text-sm text-white">{userData?.name}</p>
                         <p className="text-xs text-gray-400">
