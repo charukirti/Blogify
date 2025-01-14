@@ -32,14 +32,43 @@ export const htmlParserOptions = {
         </h3>
       );
     }
+    if (domNode.name === "h4") {
+      return (
+        <h3 className="text-1xl font-medium text-gray-300 mb-4 mt-6">
+          {getTextContent(domNode)}
+        </h3>
+      );
+    }
     if (domNode.name === "p") {
       return (
-        <p className="text-gray-300 text-lg leading-relaxed mb-6">
+        <p className="text-gray-300 text-base leading-relaxed mb-6">
           {domNode.children.map((child, i) => {
             if (child.type === "text") return child.data;
             return null;
           })}
         </p>
+      );
+    }
+
+    if (domNode.name === "pre") {
+      return (
+        <pre className="rounded-lg bg-gray-800 text-gray-200 text-base text-wrap p-4 mb-6 font-mono">
+          {getTextContent(domNode)}
+        </pre>
+      );
+    }
+
+    if (domNode.name === "code") {
+      // if inside pre no need of style
+      const isInsidePre = domNode.parent && domNode.parent.name === "pre";
+      if (isInsidePre) {
+        return getTextContent(domNode);
+      }
+
+      return (
+        <code className="bg-gray-800 rounded px-1.5 py-0.5 font-mono text-sm text-gray-200">
+          {getTextContent(domNode)}
+        </code>
       );
     }
     if (domNode.name === "ul") {
