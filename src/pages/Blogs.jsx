@@ -47,7 +47,7 @@ export default function Blogs() {
           <h1 className="text-3xl font-bold mb-8 w-fit text-gray-200 bg-black/20 backdrop-blur-sm sticky top-24 z-30">
             Blog Posts {selectedTag && `- Tagged with ${selectedTag}`}
           </h1>
-          <div className="lg:space-y-8">
+          <div className="space-y-5 lg:space-y-8">
             {filteredPosts?.map((post) => (
               <Suspense fallback={<Loader />} key={post.$id}>
                 <BlogCard key={post.$id} post={post} />
@@ -56,7 +56,7 @@ export default function Blogs() {
           </div>
         </div>
 
-        <div className="lg:sticky lg:top-24 lg:self-start h-fit mt-3 ">
+        <div className="hidden md:block lg:sticky lg:top-24 lg:self-start h-fit mt-3 ">
           {posts && (
             <Suspense fallback={<Loader />}>
               <TagsSection posts={posts} onTagClick={handleTagClick} />
