@@ -6,7 +6,7 @@ const initialState = {
     hasLiked: {},
     comments: {},
     commentsCount: {},
-    viewsCount: 0,
+    viewsCount: {},
     loading: false,
     error: null,
 };
@@ -64,15 +64,20 @@ export const fetchCommentsCount = createAsyncThunk(
     }
 );
 
-export const fetchViews = (blogId) => async (dispatch) => {
-    try {
-        const total = await interactionService.getViewsCount(blogId);
-        dispatch(setViewsCount(total?.views || 0));
-    } catch (error) {
-        dispatch(setViewsCount(0));
-        console.log('Error while fetching views', error.message);
+export const fetchViews = createAsyncThunk(
+    'interactions/fetchViews',
+    async (blogId, { rejectWithValue }) => {
+        try {
+            const response = await interactionService.getViewsCount(blogId);
+            return {
+                blogId,
+                views: response?.views || 0
+            };
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
     }
-};
+);
 const interactionSlice = createSlice({
     name: 'interactions',
     initialState,
@@ -120,7 +125,8 @@ const interactionSlice = createSlice({
             }
         },
         setViewsCount: (state, action) => {
-            state.viewsCount = action.payload;
+            const { blogId, views } = action.payload;
+            state.viewsCount[blogId] = views;
         }
 
     },
@@ -177,6 +183,19 @@ const interactionSlice = createSlice({
                     state.commentsCount[blogId] = total;
                 })
                 .addCase(fetchCommentsCount.rejected, (state, action) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                })
+                .addCase(fetchViews.pending, (state) => {
+                    state.loading = true;
+                    state.error = false;
+                })
+                .addCase(fetchViews.fulfilled, (state, action) => {
+                    const { blogId, views } = action.payload;
+                    state.viewsCount[blogId] = views;
+                    state.loading = false;
+                })
+                .addCase(fetchViews.rejected, (state, action) => {
                     state.loading = false;
                     state.error = action.payload;
                 });
