@@ -18,22 +18,22 @@ const BlogCard = memo(function BlogCard({ post }) {
   );
 
   return (
-    <div className="bg-[#95a5a6]  p-2 rounded-lg shadow-lg hover:shadow-xl transition w-full lg:w-[768px]">
+    <article className="bg-[#95a5a6]  p-2 rounded-lg shadow-lg hover:shadow-xl transition w-full lg:w-[768px]">
       <Link to={`/blog/${post.$id}`}>
         <img
           src={imgUrl}
           alt={title}
-          className="w-full h-96 object-fill rounded-lg"
+          className="w-full  lg:h-96 object-fill rounded-lg"
         />
-        <div className="p-4">
-          <h2 className="text-[#ffffff] text-2xl font-semibold">{title}</h2>
+        <div className="p-2">
+          <h2 className="text-[#ffffff] text-xl font-semibold">{title}</h2>
           <p className="text-[#ffffff] text-sm mt-2 line-clamp-3">
             {description}
           </p>
           <div className="flex justify-between  items-center text-[#ffffff] text-xs mt-4">
             <div className="flex flex-col g">
               <span className="lg:text-sm">
-                Published at: {new Date($createdAt).toLocaleDateString()}
+                Published on: {new Date($createdAt).toLocaleDateString()}
               </span>
               {updatedAt && (
                 <span className="before:content-['•'] before:mx-2">
@@ -52,7 +52,7 @@ const BlogCard = memo(function BlogCard({ post }) {
           </div>
         </div>
       </Link>
-    </div>
+    </article>
   );
 });
 
