@@ -8,12 +8,14 @@ import { fetchViews } from "../../store/interactionsSlice";
 
 export default function AuthorPostCard({ post }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const viewsCount = useSelector(state => state.interactions.viewsCount)
-  const dispatch = useDispatch()
+  const viewsCount = useSelector(
+    (state) => state.interactions.viewsCount[post.$id] || 0
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchViews(post.$id))
-  }, [dispatch, post.$id])
+    dispatch(fetchViews(post.$id));
+  }, [dispatch, post.$id]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -27,14 +29,13 @@ export default function AuthorPostCard({ post }) {
     setShowDeleteModal(true);
   }
 
-  console.log(post);
   return (
     <div className="bg-[#95a5a6] rounded-lg shadow-md  overflow-hidden hover:shadow-lg transition-shadow">
       <Link to={`/blog/${post.$id}`}>
         <img
           src={bucketService.getFilePreview(post.featuredImage)}
           alt={post.title}
-          className="w-full h-64 object-center"
+          className="w-full lg:h-64 object-center"
         />
       </Link>
       <div className="p-6">
@@ -64,7 +65,6 @@ export default function AuthorPostCard({ post }) {
           </span>
           <div className="flex gap-2">
             <Link to={`/edit/${post.$id}`}>
-              {" "}
               <button className="text-blue-600 hover:text-blue-700 px-2 py-1 rounded border border-blue-600 hover:border-blue-700 transition-colors">
                 <Edit size={22} />
               </button>
