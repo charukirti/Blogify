@@ -26,7 +26,7 @@ export default function Blog() {
   const { hasLiked, likesCount } = useSelector((state) => state.interactions);
 
   const viewsCount = useSelector(
-    (state) => state.interactions.viewsCount[post.$id] || 0
+    (state) => state.interactions.viewsCount[id] || 0
   );
 
   const parsedContent = post?.content
