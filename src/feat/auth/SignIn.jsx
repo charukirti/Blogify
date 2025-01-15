@@ -26,7 +26,7 @@ export default function SignIn() {
       if (session) {
         const userData = await authservice.getCurrentUser();
         if (userData) {
-          dispatch(authLogin(userData));
+          dispatch(authLogin({userData}));
           navigate("/");
         }
       }
