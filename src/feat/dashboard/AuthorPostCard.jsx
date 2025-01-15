@@ -39,7 +39,7 @@ export default function AuthorPostCard({ post }) {
         />
       </Link>
       <div className="p-6">
-        <div className="flex flex-wrap  mb-3 justify-between">
+        <div className="flex flex-wrap  sm:gap-2 mb-3 justify-between">
           {post.tags.map((tag) => (
             <span
               key={tag}
@@ -49,7 +49,7 @@ export default function AuthorPostCard({ post }) {
             </span>
           ))}
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1 lg:space-x-4">
             <span className="text-sm">❤️ {post.likes_count || 0} </span>
             <span className="text-sm">💬 {post.comments_count || 0}</span>
             <span className="text-sm">👀 {viewsCount || 0}</span>
