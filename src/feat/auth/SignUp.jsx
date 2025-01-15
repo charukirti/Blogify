@@ -40,17 +40,14 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-dvh flex items-center justify-center flex-col ">
-      <h1 className="text-4xl font-inter font-bold text-white mb-6 text-center">
-        Blogify
-      </h1>
+    <div className="mt-20 flex items-center justify-center flex-col ">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md rounded-lg shadow-xl p-6 bg-neutral-700"
       >
-        <h2 className="text-4xl font-inter font-bold text-white mb-6 text-center">
+        <h1 className="text-xl lg:text-4xl font-bold text-white mb-6 text-center">
           Create an Account
-        </h2>
+        </h1>
 
         <div className="mb-4">
           <label

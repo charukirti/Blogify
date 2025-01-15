@@ -36,17 +36,14 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center flex-col">
-      <h1 className="text-4xl font-inter font-bold text-white mb-6 text-center">
-        Blogify
-      </h1>
+    <div className="flex items-center justify-center flex-col mt-20">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md rounded-lg shadow-2xl p-6 bg-neutral-700"
       >
-        <h2 className="text-4xl font-inter font-bold text-gray-200 mb-6 text-center">
-          Sign in to continue
-        </h2>
+      <h1 className="text-xl lg:text-4xl font-inter font-bold text-white mb-6 text-center">
+        Welcome Back to Blogify
+      </h1>
 
         <div className="mb-4">
           <label
