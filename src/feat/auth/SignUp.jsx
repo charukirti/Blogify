@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
+import { getErrorMessage } from "../../utils/getAuthErrors";
 
 export default function SignUp() {
   const [error, setError] = useState("");
@@ -35,7 +36,8 @@ export default function SignUp() {
         navigate("/");
       }
     } catch (error) {
-      setError(error.message);
+      const errorMessage = getErrorMessage(error)
+      setError(errorMessage);
     }
   };
 

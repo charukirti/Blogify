@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import authservice from "../../services/auth";
 import { login as authLogin } from "../../store/authSlice";
+import { getErrorMessage } from "../../utils/getAuthErrors";
 
 export default function SignIn() {
   const [error, setError] = useState("");
@@ -31,7 +32,8 @@ export default function SignIn() {
         }
       }
     } catch (error) {
-      setError(error.message);
+      const errorMessage = getErrorMessage(error)
+      setError(errorMessage);
     }
   };
 
