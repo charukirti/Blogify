@@ -5,7 +5,7 @@ import { avatar } from "../services/appwrite";
 import Loader from "../components/Loader";
 
 export default function Profile() {
-  const { status, userData } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.auth);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,17 +14,23 @@ export default function Profile() {
     async function fetchUserDetails() {
       setLoading(true);
       try {
-        const userData = await authservice.getCurrentUser();
-        setUser(userData);
-      } catch (err) {
-        setError("Failed to load user details. Please try again.");
-        console.error("Error fetching user details:", err);
+        if (userData) {
+          setUser(userData);
+        } else {
+          const currentUser = await authservice.getCurrentUser();
+          if (currentUser) {
+            setUser(currentUser);
+          }
+        }
+      } catch (error) {
+        setError("Failed to fetchUserDetails");
+        console.log("Failed to fetchUserDetails", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchUserDetails();
-  }, []);
+    fetchUserDetails()
+  }, [userData]);
 
   if (loading) {
     return <Loader />;
@@ -44,8 +50,8 @@ export default function Profile() {
           <div className="rounded-full overflow-hidden border-2 border-gray-500">
             <img
               src={
-                userData?.email
-                  ? avatar.getInitials(userData.email)
+                user?.email
+                  ? avatar.getInitials(user?.email)
                   : "/default-avatar.png"
               }
               alt={`Avatar of ${user?.name || "User"}`}

@@ -3,16 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthorPostsIds } from "../../store/fetchPostSlice";
 import analyticsService from "../../services/AnalyticsService";
 import AnalyticsCard from "./AnalyticsCard";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-} from "recharts";
-import { LineChart } from "lucide-react";
 import AnalyticsGraph from "./AnalyticsGraph";
+import { getUser } from "../../store/authSlice";
 
 export default function Analytics() {
   const dispatch = useDispatch();
@@ -22,6 +14,10 @@ export default function Analytics() {
   const [period, setPeriod] = useState("weekly");
   const [isLoading, setIsLoading] = useState(false);
   const [graphData, setGraphData] = useState([]);
+
+  useEffect(() => {
+    dispatch(getUser())
+  }, [dispatch])
 
   const fetchAnalyticsData = useCallback(async () => {
     if (!authorPostsIds.length) return;
@@ -41,12 +37,16 @@ export default function Analytics() {
   }, [authorPostsIds, period]);
 
   useEffect(() => {
-    dispatch(fetchAuthorPostsIds());
-  }, [dispatch]);
+    if (userData) {  // Only fetch if we have user data
+      dispatch(fetchAuthorPostsIds());
+    }
+  }, [dispatch, userData]);
 
   useEffect(() => {
-    fetchAnalyticsData();
-  }, [fetchAnalyticsData]);
+    if (userData) {  // Only fetch if we have user data
+      fetchAnalyticsData();
+    }
+  }, [fetchAnalyticsData, userData]);
 
   const handlePeriodChange = (e) => {
     setPeriod(e.target.value);
@@ -77,7 +77,7 @@ export default function Analytics() {
         <option value="yearly">Yearly</option>
       </select>
       <h1 className="text-4xl text-gray-200 font-bold mb-3">
-        Analytics for {userData.name}
+        Analytics for {userData?.name}
       </h1>
       <div>
         {isLoading ? (

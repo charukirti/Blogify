@@ -1,22 +1,29 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useState, useEffect, useRef } from "react";
 import { avatar } from "../../services/appwrite";
 import LogoutButton from "./LogoutButton";
 import SearchBar from "./SearchBar";
+import { getUser } from "../../store/authSlice";
 
 export default function Header() {
   const { status, userData } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
   const menuItems = [{ title: "Write", path: "/create" }];
 
   const dropdownItems = [
+    { title: "Home", path: "/" },
     { title: "Profile", path: "/profile" },
     { title: "Dashboard", path: "/dashboard" },
   ];
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -65,7 +72,7 @@ export default function Header() {
                 >
                   <img
                     src={
-                      userData?.email ? avatar.getInitials(userData.email) : ""
+                      userData?.email ? avatar.getInitials(userData?.email) : ""
                     }
                     alt="Profile"
                     className="w-8 h-8 rounded-full"
