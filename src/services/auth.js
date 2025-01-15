@@ -5,7 +5,9 @@ export class AuthService {
         try {
             const userAccount = await account.create(ID.unique(), email, password, name);
             if (userAccount) {
-                return await this.login(email, password);
+                const session = await this.login(email, password);
+                const userData = await this.getCurrentUser();
+                return { session, userData };
             }
         } catch (error) {
             console.error("Create account failed:", error);
@@ -15,7 +17,9 @@ export class AuthService {
 
     async login(email, password) {
         try {
-            return await account.createEmailPasswordSession(email, password);
+            const session = await account.createEmailPasswordSession(email, password);
+            const userData = await this.getCurrentUser();
+            return { session, userData };
         } catch (error) {
             console.error("Login failed:", error);
             throw error;
@@ -25,7 +29,8 @@ export class AuthService {
 
     async getCurrentUser() {
         try {
-            return await account.get();
+            const userData = await account.get();
+            return userData;
         } catch (error) {
             console.error("Get user failed:", error);
             throw error;
