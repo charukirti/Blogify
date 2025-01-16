@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
 import { getErrorMessage } from "../../utils/getAuthErrors";
+import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function SignUp() {
   const [error, setError] = useState("");
@@ -36,17 +37,18 @@ export default function SignUp() {
         navigate("/");
       }
     } catch (error) {
-      const errorMessage = getErrorMessage(error)
+      const errorMessage = getErrorMessage(error);
       setError(errorMessage);
     }
   };
 
+  async function handleOAuthLogin() {
+    await authservice.logInWithGoogle();
+  }
+
   return (
-    <div className="mt-20 flex items-center justify-center flex-col ">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md rounded-lg shadow-xl p-6 bg-neutral-700"
-      >
+    <div className="mt-20 flex items-center justify-center gap-4 flex-col p-6 mx-auto bg-neutral-700 max-w-md rounded-lg ">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full shadow-xl ">
         <h1 className="text-xl lg:text-4xl font-bold text-white mb-6 text-center">
           Create an Account
         </h1>
@@ -129,12 +131,14 @@ export default function SignUp() {
 
         <button
           type="submit"
-          className="w-full py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-500"
+          className="w-full py-2 text-xl font-semibold text-white rounded-lg bg-violet-600 hover:bg-violet-500"
         >
           Sign up
         </button>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
       </form>
+      <h3 className="text-white text-2xl font-bold">OR</h3>
+      <SigninWithGoogle onOAuthLogin={handleOAuthLogin} />
     </div>
   );
 }

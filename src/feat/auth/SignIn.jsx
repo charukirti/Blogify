@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router";
 import authservice from "../../services/auth";
 import { login as authLogin } from "../../store/authSlice";
 import { getErrorMessage } from "../../utils/getAuthErrors";
+import SigninWithGoogle from "./SigninWithGoogle";
 
 export default function SignIn() {
   const [error, setError] = useState("");
@@ -27,25 +28,26 @@ export default function SignIn() {
       if (session) {
         const userData = await authservice.getCurrentUser();
         if (userData) {
-          dispatch(authLogin({userData}));
+          dispatch(authLogin({ userData }));
           navigate("/");
         }
       }
     } catch (error) {
-      const errorMessage = getErrorMessage(error)
+      const errorMessage = getErrorMessage(error);
       setError(errorMessage);
     }
   };
 
+  async function handleOAuthLogin() {
+    await authservice.logInWithGoogle();
+  }
+
   return (
-    <div className="flex items-center justify-center flex-col mt-20">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md rounded-lg shadow-2xl p-6 bg-neutral-700"
-      >
-      <h1 className="text-xl lg:text-4xl font-inter font-bold text-white mb-6 text-center">
-        Welcome Back to Blogify
-      </h1>
+    <div className="flex items-center justify-center flex-col gap-4 mt-20 max-w-md mx-auto bg-neutral-700 rounded-lg p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <h1 className="text-xl lg:text-4xl font-inter font-bold text-white mb-6 text-center">
+          Welcome Back to Blogify
+        </h1>
 
         <div className="mb-4">
           <label
@@ -102,12 +104,15 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className="w-full py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-500 font-semibold text-lg"
+          className="w-full py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-500 font-semibold text-xl"
         >
           Sign in
         </button>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
       </form>
+
+      <h3 className="text-white text-2xl font-bold">OR</h3>
+      <SigninWithGoogle onOAuthLogin={handleOAuthLogin} />
     </div>
   );
 }
