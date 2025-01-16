@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import authservice from "./services/auth";
 import Loader from "./components/Loader";
 import AppLayout from "./components/layout/AppLayout";
+import AuthCallback from "./pages/AuthCallback";
+import AuthFailure from "./pages/AuthFailure";
 const Blogs = lazy(() => import("./pages/Blogs"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -114,6 +116,22 @@ function App() {
               element={
                 <ProtectedRoute isAuthenticated>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/callback"
+              element={
+                <ProtectedRoute isAuthenticated>
+                  <AuthCallback />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/failure"
+              element={
+                <ProtectedRoute isAuthenticated>
+                  <AuthFailure />
                 </ProtectedRoute>
               }
             />
