@@ -60,9 +60,35 @@ export class AuthService {
 
     }
 
-    // async createOAuthSession(provider) {
+    async createOAuthSession(provider) {
+        try {
+            if (!provider) {
+                throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Provider is required');
+            }
 
-    // }
+            const session = await account.createOAuth2Session(
+                provider,
+                `${window.location.origin}/callback`,
+                `${window.location.origin}/failure`,
+                ['email', 'profile']
+            );
+
+            const userData = this.getCurrentUser();
+            return { session, userData };
+        } catch (error) {
+            console.log('OAuth login failed', error);
+            throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, `${provider} authenticaion failed`);
+        }
+    }
+
+    async logInWithGoogle() {
+        try {
+            return await this.createOAuthSession('google');
+
+        } catch (error) {
+            throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Failed log in');
+        }
+    }
 
     async getCurrentUser() {
         try {
