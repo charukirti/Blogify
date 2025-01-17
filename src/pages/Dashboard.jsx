@@ -18,7 +18,7 @@ export default function Dashboard() {
         return <Analytics />;
       default:
         return (
-          <p className="text-base lg:text-2xl text-gray-200">
+          <p className="text-base text-gray-200 lg:text-2xl">
             Select the tab you want
           </p>
         );
@@ -34,7 +34,7 @@ export default function Dashboard() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 font-medium ${
               activeTab === tab
-                ? "text-blue-500 border-b-2 border-blue-500"
+                ? "border-b-2 border-blue-500 text-blue-500"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >

@@ -16,8 +16,8 @@ export default function Analytics() {
   const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
-    dispatch(getUser())
-  }, [dispatch])
+    dispatch(getUser());
+  }, [dispatch]);
 
   const fetchAnalyticsData = useCallback(async () => {
     if (!authorPostsIds.length) return;
@@ -25,7 +25,7 @@ export default function Analytics() {
     try {
       const result = await analyticsService.fetchAnalytics(
         authorPostsIds,
-        period
+        period,
       );
       setData(result.totals);
       setGraphData(result.timeSeries);
@@ -37,13 +37,15 @@ export default function Analytics() {
   }, [authorPostsIds, period]);
 
   useEffect(() => {
-    if (userData) {  // Only fetch if we have user data
+    if (userData) {
+      // Only fetch if we have user data
       dispatch(fetchAuthorPostsIds());
     }
   }, [dispatch, userData]);
 
   useEffect(() => {
-    if (userData) {  // Only fetch if we have user data
+    if (userData) {
+      // Only fetch if we have user data
       fetchAnalyticsData();
     }
   }, [fetchAnalyticsData, userData]);
@@ -66,7 +68,7 @@ export default function Analytics() {
   };
 
   return (
-    <div className="h-screen mt-4">
+    <div className="mt-4 h-screen">
       <select
         onChange={handlePeriodChange}
         value={period}
@@ -76,14 +78,14 @@ export default function Analytics() {
         <option value="monthly">Month</option>
         <option value="yearly">Yearly</option>
       </select>
-      <h1 className="text-4xl text-gray-200 font-bold mb-3">
+      <h1 className="mb-3 text-4xl font-bold text-gray-200">
         Analytics for {userData?.name}
       </h1>
       <div>
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <AnalyticsCard
               title={`Readers this ${getPeriodLabel()}`}
               value={data.views}
@@ -99,8 +101,8 @@ export default function Analytics() {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10  mt-4">
-        <div className=" md:col-span-2 h-[350px] w-full">
+      <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-2">
+        <div className="h-[350px] w-full md:col-span-2">
           <AnalyticsGraph
             data={graphData}
             dataKey={"views"}

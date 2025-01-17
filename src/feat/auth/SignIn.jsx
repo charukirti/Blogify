@@ -43,16 +43,16 @@ export default function SignIn() {
   }
 
   return (
-    <div className="flex items-center justify-center flex-col gap-4 mt-20 max-w-md mx-auto bg-neutral-700 rounded-lg p-6">
+    <div className="mx-auto mt-20 flex max-w-md flex-col items-center justify-center gap-4 rounded-lg bg-neutral-700 p-6">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <h1 className="text-xl lg:text-4xl font-inter font-bold text-white mb-6 text-center">
+        <h1 className="font-inter mb-6 text-center text-xl font-bold text-white lg:text-4xl">
           Welcome Back to Blogify
         </h1>
 
         <div className="mb-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-200 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-200"
           >
             Email
           </label>
@@ -67,17 +67,17 @@ export default function SignIn() {
               },
             })}
             placeholder="Your Email"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
         <div className="mb-4">
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-200 mb-2"
+            className="mb-2 block text-sm font-medium text-gray-200"
           >
             Password
           </label>
@@ -88,14 +88,14 @@ export default function SignIn() {
               required: "Password is required",
             })}
             placeholder="Your Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
+            <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
         </div>
 
-        <p className="text-right my-5 text-gray-200">
+        <p className="my-5 text-right text-gray-200">
           Don't have an account?{" "}
           <Link to="/signup" className="text-blue-400">
             Sign up
@@ -104,14 +104,14 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className="w-full py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-500 font-semibold text-xl"
+          className="w-full rounded-lg bg-violet-600 py-2 text-xl font-semibold text-white hover:bg-violet-500"
         >
           Sign in
         </button>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+        {error && <p className="mt-8 text-center text-red-600">{error}</p>}
       </form>
 
-      <h3 className="text-white text-2xl font-bold">OR</h3>
+      <h3 className="text-2xl font-bold text-white">OR</h3>
       <SigninWithGoogle onOAuthLogin={handleOAuthLogin} />
     </div>
   );

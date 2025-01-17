@@ -9,7 +9,7 @@ import { fetchViews } from "../../store/interactionsSlice";
 export default function AuthorPostCard({ post }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const viewsCount = useSelector(
-    (state) => state.interactions.viewsCount[post.$id] || 0
+    (state) => state.interactions.viewsCount[post.$id] || 0,
   );
   const dispatch = useDispatch();
 
@@ -30,20 +30,20 @@ export default function AuthorPostCard({ post }) {
   }
 
   return (
-    <div className="bg-[#95a5a6] rounded-lg shadow-md  overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="overflow-hidden rounded-lg bg-[#95a5a6] shadow-md transition-shadow hover:shadow-lg">
       <Link to={`/blog/${post.$id}`}>
         <img
           src={bucketService.getFilePreview(post.featuredImage)}
           alt={post.title}
-          className="w-full lg:h-64 object-center"
+          className="w-full object-center lg:h-64"
         />
       </Link>
       <div className="p-6">
-        <div className="flex flex-wrap  sm:gap-2 mb-3 justify-between">
+        <div className="mb-3 flex flex-wrap justify-between sm:gap-2">
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="text-gray-600 bg-gray-100 px-2 py-1 rounded"
+              className="rounded bg-gray-100 px-2 py-1 text-gray-600"
             >
               {tag}
             </span>
@@ -55,22 +55,22 @@ export default function AuthorPostCard({ post }) {
             <span className="text-sm">👀 {viewsCount || 0}</span>
           </div>
         </div>
-        <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="mb-2 text-xl font-bold text-gray-900 lg:text-2xl">
           <Link to={`/blog/${post.$id}`}>{post.title}</Link>
         </h2>
-        <p className="text-gray-600 mb-4 line-clamp-3">{post.description}</p>
+        <p className="mb-4 line-clamp-3 text-gray-600">{post.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-500">
             Published on : {formatDate(post.$createdAt)}
           </span>
           <div className="flex gap-2">
             <Link to={`/edit/${post.$id}`}>
-              <button className="text-blue-600 hover:text-blue-700 px-2 py-1 rounded border border-blue-600 hover:border-blue-700 transition-colors">
+              <button className="rounded border border-blue-600 px-2 py-1 text-blue-600 transition-colors hover:border-blue-700 hover:text-blue-700">
                 <Edit size={22} />
               </button>
             </Link>
             <button
-              className="text-red-600 hover:text-red-700 px-2 py-1 rounded border border-red-600 hover:border-red-700 transition-colors"
+              className="rounded border border-red-600 px-2 py-1 text-red-600 transition-colors hover:border-red-700 hover:text-red-700"
               onClick={handleDelete}
             >
               <Trash size={22} />

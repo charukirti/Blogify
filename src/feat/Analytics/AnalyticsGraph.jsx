@@ -11,7 +11,7 @@ import {
 export default function AnalyticsGraph({ title, data, dataKey, color }) {
   return (
     <>
-      <h2 className="text-left text-lg font-bold mb-2 text-gray-200">
+      <h2 className="mb-2 text-left text-lg font-bold text-gray-200">
         {title}
       </h2>
       <ResponsiveContainer width="100%" height="100%">

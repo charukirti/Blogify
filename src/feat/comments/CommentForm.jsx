@@ -28,7 +28,7 @@ export default function CommentForm({
         blogId,
         data.content,
         parentId,
-        currentUser?.name
+        currentUser?.name,
       );
       dispatch(addComment({ blogId, comment: response }));
       reset();
@@ -50,18 +50,18 @@ export default function CommentForm({
               message: "Comment must be at least 3 characters long",
             },
           })}
-          className="w-full px-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full rounded-lg px-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
           placeholder="Write a comment..."
           rows={3}
         />
         {errors.content && (
-          <span className="text-red-500 text-sm">{errors.content.message}</span>
+          <span className="text-sm text-red-500">{errors.content.message}</span>
         )}
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="self-end px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="self-end rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
         >
           {isSubmitting ? "Adding..." : "Add your comment"}
         </button>

@@ -44,14 +44,14 @@ export default function Comment({
     try {
       const updatedComment = await interactionService.editComment(
         comment.$id,
-        data.content
+        data.content,
       );
       dispatch(
         updateComment({
           blogId,
           commentId: comment.$id,
           content: updatedComment.content,
-        })
+        }),
       );
       setIsEditing(false);
     } catch (error) {
@@ -63,14 +63,14 @@ export default function Comment({
     <section
       className={`border-l-2 ${
         isAuthor ? "border-blue-500" : "border-gray-200"
-      }  pl-4 mb-4`}
+      } mb-4 pl-4`}
     >
-      <div className="bg-gray-800 rounded-lg p-4">
-        <div className="flex justify-between items-center">
+      <div className="rounded-lg bg-gray-800 p-4">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="font-medium text-gray-200">{comment.username}</div>
             {isAuthor && (
-              <span className="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
+              <span className="rounded-full bg-blue-100 px-2 py-1 text-xs font-semibold text-blue-800">
                 Author
               </span>
             )}
@@ -104,7 +104,7 @@ export default function Comment({
             className="mt-2 flex gap-4"
             onClick={() => setIsReplying(!isReplying)}
           >
-            <button className="text-blue-500 hover:text-blue-700 text-sm">
+            <button className="text-sm text-blue-500 hover:text-blue-700">
               {isReplying ? "Cancle reply" : "Reply"}
             </button>
           </div>

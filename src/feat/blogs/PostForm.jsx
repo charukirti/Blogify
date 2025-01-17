@@ -105,20 +105,20 @@ export default function PostForm({ post }) {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-6">
       {error && (
-        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div className="mb-4 rounded border border-red-400 bg-red-100 p-4 text-red-700">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit(submit)} className="w-full space-y-4">
-        <div className="grid grid-cols-1  gap-8">
+        <div className="grid grid-cols-1 gap-8">
           <div className="space-y-6">
             <div className="space-y-2">
               <label
                 htmlFor="title"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Title
               </label>
@@ -126,7 +126,7 @@ export default function PostForm({ post }) {
                 id="title"
                 type="text"
                 placeholder="Enter your blog title"
-                className="w-full py-2 border-b-2 focus:border-b-blue-500 bg-transparent outline-none text-gray-200 text-xl md:text-2xl"
+                className="w-full border-b-2 bg-transparent py-2 text-xl text-gray-200 outline-none focus:border-b-blue-500 md:text-2xl"
                 {...register("title", { required: "Title is required" })}
               />
               {errors.title && (
@@ -137,7 +137,7 @@ export default function PostForm({ post }) {
             <div className="space-y-2">
               <label
                 htmlFor="slug"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Slug
               </label>
@@ -145,7 +145,7 @@ export default function PostForm({ post }) {
                 id="slug"
                 type="text"
                 placeholder="url-friendly-title"
-                className="w-full py-2 border-b-2 focus:border-b-blue-500 bg-transparent outline-none text-gray-200 text-xl md:text-2xl"
+                className="w-full border-b-2 bg-transparent py-2 text-xl text-gray-200 outline-none focus:border-b-blue-500 md:text-2xl"
                 {...register("slug", { required: "Slug is required" })}
               />
               {errors.slug && (
@@ -156,7 +156,7 @@ export default function PostForm({ post }) {
             <div className="space-y-2">
               <label
                 htmlFor="description"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Description
               </label>
@@ -164,7 +164,7 @@ export default function PostForm({ post }) {
                 id="description"
                 placeholder="Brief description of your blog post"
                 rows={2}
-                className="w-full py-2 border-b-2 focus:border-b-blue-500 bg-transparent outline-none text-gray-200 text-xl md:text-2xl"
+                className="w-full border-b-2 bg-transparent py-2 text-xl text-gray-200 outline-none focus:border-b-blue-500 md:text-2xl"
                 {...register("description", {
                   required: "Description is required",
                 })}
@@ -179,13 +179,13 @@ export default function PostForm({ post }) {
             <div className="space-y-2">
               <label
                 htmlFor="status"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Status
               </label>
               <select
                 id="status"
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full rounded-md border px-3 py-2"
                 {...register("status", { required: "Status is required" })}
               >
                 <option value="active">Active</option>
@@ -200,7 +200,7 @@ export default function PostForm({ post }) {
             <div className="space-y-2">
               <label
                 htmlFor="tags"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Tags
               </label>
@@ -208,7 +208,7 @@ export default function PostForm({ post }) {
                 id="tags"
                 type="text"
                 placeholder="tag1, tag2, tag3"
-                className="w-full px-3 py-2 bg-transparent text-gray-200 border-b focus:outline-none focus:border-b-blue-400"
+                className="w-full border-b bg-transparent px-3 py-2 text-gray-200 focus:border-b-blue-400 focus:outline-none"
                 {...register("tags")}
               />
               <p className="text-sm text-gray-500">Separate tags with commas</p>
@@ -217,7 +217,7 @@ export default function PostForm({ post }) {
             <div className="space-y-3">
               <label
                 htmlFor="featuredImg"
-                className="text-base lg:text-3xl font-medium text-gray-200"
+                className="text-base font-medium text-gray-200 lg:text-3xl"
               >
                 Featured Image
               </label>
@@ -234,7 +234,7 @@ export default function PostForm({ post }) {
                   <img
                     src={bucketService.getFilePreview(post.featuredImage)}
                     alt="Current featured image"
-                    className="mt-1 h-32 w-auto object-cover rounded"
+                    className="mt-1 h-32 w-auto rounded object-cover"
                   />
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function PostForm({ post }) {
 
           <div className="space-y-2">
             <div className="space-y-2">
-              <label className="text-base lg:text-3xl font-semibold text-gray-200">
+              <label className="text-base font-semibold text-gray-200 lg:text-3xl">
                 Content
               </label>
               <RTE
@@ -255,13 +255,13 @@ export default function PostForm({ post }) {
           </div>
         </div>
 
-        <div className="flex justify-end mt-4">
+        <div className="mt-4 flex justify-end">
           <button
             type="submit"
             disabled={loading}
-            className={`px-6 py-2 text-white rounded-md ${
+            className={`rounded-md px-6 py-2 text-white ${
               loading
-                ? "bg-blue-400 cursor-not-allowed"
+                ? "cursor-not-allowed bg-blue-400"
                 : "bg-blue-600 hover:bg-blue-700"
             }`}
           >

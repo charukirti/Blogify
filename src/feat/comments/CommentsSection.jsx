@@ -7,7 +7,7 @@ import Comment from "./Comment";
 
 const selectCommentsByBlogId = createSelector(
   [(state) => state.interactions.comments, (_, blogId) => blogId],
-  (comments, blogId) => comments[blogId] || []
+  (comments, blogId) => comments[blogId] || [],
 );
 
 const selectLoading = (state) => state.interactions.loading;
@@ -17,7 +17,7 @@ export default function CommentSection({ blogId, authorId }) {
   const dispatch = useDispatch();
 
   const comments = useSelector((state) =>
-    selectCommentsByBlogId(state, blogId)
+    selectCommentsByBlogId(state, blogId),
   );
   const loading = useSelector(selectLoading);
   const currentUser = useSelector(selectCurrentUser);
@@ -45,7 +45,7 @@ export default function CommentSection({ blogId, authorId }) {
 
   if (loading && !comments.length) {
     return (
-      <div className="flex justify-center items-center py-8">
+      <div className="flex items-center justify-center py-8">
         <div className="text-gray-200">Loading comments...</div>
       </div>
     );
@@ -53,7 +53,7 @@ export default function CommentSection({ blogId, authorId }) {
 
   return (
     <div className="mt-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-200">Comments</h2>
         <span className="text-gray-200">
           {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
@@ -92,7 +92,7 @@ export default function CommentSection({ blogId, authorId }) {
       </div>
 
       {!loading && comments.length === 0 && (
-        <div className="text-center py-8 text-gray-600">
+        <div className="py-8 text-center text-gray-600">
           No comments yet. Be the first to comment!
         </div>
       )}

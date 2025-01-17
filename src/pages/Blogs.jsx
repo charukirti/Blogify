@@ -25,7 +25,7 @@ export default function Blogs() {
     (tag) => {
       setSelectedTag(tag === selectedTag ? null : tag);
     },
-    [selectedTag]
+    [selectedTag],
   );
 
   const filteredPosts = useMemo(
@@ -33,7 +33,7 @@ export default function Blogs() {
       selectedTag
         ? posts?.filter((post) => post.tags?.includes(selectedTag))
         : posts,
-    [selectedTag, posts]
+    [selectedTag, posts],
   );
 
   if (loading) {
@@ -41,10 +41,10 @@ export default function Blogs() {
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-4">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 mt-3">
-          <h1 className="text-2xl font-bold mb-8  text-gray-200">
+    <main className="mx-auto max-w-7xl px-4">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="mt-3 lg:col-span-2">
+          <h1 className="mb-8 text-2xl font-bold text-gray-200">
             Blog Posts {selectedTag && `- Tagged with ${selectedTag}`}
           </h1>
           <div className="space-y-5 lg:space-y-8">
@@ -56,7 +56,7 @@ export default function Blogs() {
           </div>
         </div>
 
-        <div className="hidden md:block lg:sticky lg:top-24 lg:self-start h-fit mt-3 ">
+        <div className="mt-3 hidden h-fit md:block lg:sticky lg:top-24 lg:self-start">
           {posts && (
             <Suspense fallback={<Loader />}>
               <TagsSection posts={posts} onTagClick={handleTagClick} />

@@ -14,29 +14,29 @@ const BlogCard = memo(function BlogCard({ post }) {
 
   const imgUrl = useMemo(
     () => bucketService.getFilePreview(featuredImage),
-    [featuredImage]
+    [featuredImage],
   );
 
   return (
-    <article className="bg-[#95a5a6]  p-2 rounded-lg shadow-lg hover:shadow-xl transition w-full lg:w-[768px]">
+    <article className="w-full rounded-lg bg-[#95a5a6] p-2 shadow-lg transition hover:shadow-xl lg:w-[768px]">
       <Link to={`/blog/${post.$id}`}>
         <img
           src={imgUrl}
           alt={title}
-          className="w-full  lg:h-96 object-fill rounded-lg"
+          className="w-full rounded-lg object-fill lg:h-96"
         />
         <div className="p-2">
-          <h2 className="text-[#ffffff] text-xl font-semibold">{title}</h2>
-          <p className="text-[#ffffff] text-sm mt-2 line-clamp-3">
+          <h2 className="text-xl font-semibold text-[#ffffff]">{title}</h2>
+          <p className="mt-2 line-clamp-3 text-sm text-[#ffffff]">
             {description}
           </p>
-          <div className="flex justify-between  items-center text-[#ffffff] text-xs mt-4">
-            <div className="flex flex-col g">
+          <div className="mt-4 flex items-center justify-between text-xs text-[#ffffff]">
+            <div className="g flex flex-col">
               <span className="lg:text-sm">
                 Published on: {new Date($createdAt).toLocaleDateString()}
               </span>
               {updatedAt && (
-                <span className="before:content-['•'] before:mx-2">
+                <span className="before:mx-2 before:content-['•']">
                   Updated: {new Date(updatedAt).toLocaleDateString()}
                 </span>
               )}

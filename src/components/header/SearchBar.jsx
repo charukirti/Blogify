@@ -23,7 +23,7 @@ export default function SearchBar() {
           Query.search("title", query),
           Query.search("content", query),
           Query.limit(5),
-        ]
+        ],
       );
 
       setResult(data.documents);
@@ -43,31 +43,30 @@ export default function SearchBar() {
 
   return (
     <div className="relative">
-      <div className="hidden bg-white md:flex px-1 py-2 rounded-full border border-slate-800 overflow-hidden max-w-md mx-auto ">
+      <div className="mx-auto hidden max-w-md overflow-hidden rounded-full border border-slate-800 bg-white px-1 py-2 md:flex">
         <input
           type="email"
           placeholder="Search Something..."
           value={searchQuery}
           onChange={handleSearchQuery}
-          className="w-full outline-none bg-white pl-4 text-sm"
+          className="w-full bg-white pl-4 text-sm outline-none"
         />
       </div>
 
-      {
-        results.length > 0 && searchQuery && (
-          <div className="absolute mt-1 w-full bg-white rounded-md shadow-lg border border-gray-200">
-            <ul className="max-h-60 overflow-auto">
-              {
-                results.map((result) => (
-                  <li key={result.$id} className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >
-                    <Link to={`blog/${result.$id}`}> {result.title}</Link>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        )
-      }
+      {results.length > 0 && searchQuery && (
+        <div className="absolute mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+          <ul className="max-h-60 overflow-auto">
+            {results.map((result) => (
+              <li
+                key={result.$id}
+                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+              >
+                <Link to={`blog/${result.$id}`}> {result.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

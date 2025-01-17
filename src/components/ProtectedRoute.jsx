@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import Loader from "./Loader";
 
 export default function ProtectedRoute({ children, isAuthenticated = true }) {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function ProtectedRoute({ children, isAuthenticated = true }) {
 
       setLoader(false);
     },
-    [authStatus, isAuthenticated, navigate]
+    [authStatus, isAuthenticated, navigate],
   );
-  return loader ? <p>Loading...</p> : <>{children}</>;
+  return loader ? <Loader /> : <>{children}</>;
 }

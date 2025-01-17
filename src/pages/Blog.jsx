@@ -26,7 +26,7 @@ export default function Blog() {
   const { hasLiked, likesCount } = useSelector((state) => state.interactions);
 
   const viewsCount = useSelector(
-    (state) => state.interactions.viewsCount[id] || 0
+    (state) => state.interactions.viewsCount[id] || 0,
   );
 
   const parsedContent = post?.content
@@ -82,16 +82,16 @@ export default function Blog() {
       checkHasLiked({
         blogId: id,
         userId: userData.$id,
-      })
+      }),
     );
   }, [dispatch, id, userData.$id]);
 
   if (loading) return <Loader />;
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-8">
+    <article className="mx-auto max-w-4xl px-4 py-8">
       <header className="mb-8">
-        <h1 className="text-2xl md:text-4xl font-bold mb-4 text-gray-100">
+        <h1 className="mb-4 text-2xl font-bold text-gray-100 md:text-4xl">
           {post?.title}
         </h1>
         <div className="flex items-center justify-between">
@@ -100,7 +100,7 @@ export default function Blog() {
               {" "}
               <span className="text-sm">By</span> {post?.author_name}
             </p>
-            <time className="text-gray-400 text-sm">
+            <time className="text-sm text-gray-400">
               Published on {new Date(post?.$createdAt).toLocaleDateString()}
             </time>
           </div>
@@ -124,7 +124,7 @@ export default function Blog() {
         <img
           src={bucketService.getFilePreview(post.featuredImage)}
           alt={post.title}
-          className="w-full md:h-[480px] object-fill rounded-md mb-8"
+          className="mb-8 w-full rounded-md object-fill md:h-[480px]"
         />
       )}
 
@@ -134,11 +134,11 @@ export default function Blog() {
 
       {post?.tags?.length > 0 && (
         <div className="mt-8 flex flex-wrap gap-2">
-          <span className="text-gray-400 text-sm  lg:text-base">Tags:</span>
+          <span className="text-sm text-gray-400 lg:text-base">Tags:</span>
           {post.tags.map((tag, i) => (
             <span
               key={i}
-              className="px-3 py-1 bg-gray-800 text-gray-200 rounded-full text-sm"
+              className="rounded-full bg-gray-800 px-3 py-1 text-sm text-gray-200"
             >
               {tag}
             </span>

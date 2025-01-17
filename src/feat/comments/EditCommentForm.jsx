@@ -22,17 +22,17 @@ export default function EditCommentForm({ comment, handleEdit }) {
             message: "Comment must be at least 3 characters long",
           },
         })}
-        className="w-full px-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full rounded-lg px-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
         rows={3}
       />
 
       {errors.content && (
-        <span className="text-red-500 text-sm">{errors.content.message}</span>
+        <span className="text-sm text-red-500">{errors.content.message}</span>
       )}
 
       <button
         type="submit"
-        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
       >
         Save
       </button>

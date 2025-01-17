@@ -18,21 +18,23 @@ export default function AuthorPosts() {
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-xl lg:text-3xl font-bold text-gray-200">My Posts</h1>
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <header className="mb-8 flex items-center justify-between">
+        <h1 className="text-xl font-bold text-gray-200 lg:text-3xl">
+          My Posts
+        </h1>
         <Link
           to={"/create"}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
         >
           Create New Post
         </Link>
       </header>
 
-      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {authorPosts.map((post) => (
           <Suspense fallback={<Loader />} key={post.$id}>
-            <AuthorPostCard post={post}  />
+            <AuthorPostCard post={post} />
           </Suspense>
         ))}
       </main>

@@ -41,11 +41,11 @@ export default function Header() {
   }, [isProfileOpen]);
 
   return (
-    <header className="sticky top-0 z-40 bg-neutral-800 py-4 max-w-[90rem] mx-auto rounded-full">
-      <nav className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center">
+    <header className="sticky top-0 z-40 mx-auto max-w-[90rem] rounded-full bg-neutral-800 py-4">
+      <nav className="mx-auto max-w-7xl px-4">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link to="/" className="text-2xl md:text-3xl font-bold text-white">
+            <Link to="/" className="text-2xl font-bold text-white md:text-3xl">
               Blogify
             </Link>
 
@@ -75,7 +75,7 @@ export default function Header() {
                       userData?.email ? avatar.getInitials(userData?.email) : ""
                     }
                     alt="Profile"
-                    className="w-8 h-8 rounded-full"
+                    className="h-8 w-8 rounded-full"
                   />
                 </button>
 
@@ -85,8 +85,8 @@ export default function Header() {
                       className="fixed inset-0 bg-black/40 backdrop-blur-sm"
                       onClick={() => setIsProfileOpen(!isProfileOpen)}
                     />
-                    <div className="absolute right-0 mt-2 px-5 w-60 bg-neutral-800 rounded-lg shadow-lg z-50">
-                      <div className="p-2 border-b border-neutral-700">
+                    <div className="absolute right-0 z-50 mt-2 w-60 rounded-lg bg-neutral-800 px-5 shadow-lg">
+                      <div className="border-b border-neutral-700 p-2">
                         <p className="text-sm text-white">{userData?.name}</p>
                         <p className="text-xs text-gray-400">
                           {userData?.email}
@@ -99,7 +99,7 @@ export default function Header() {
                             navigate(item.path);
                             setIsProfileOpen(false);
                           }}
-                          className="w-full my-1 p-2 rounded-md text-left text-gray-300 hover:bg-neutral-700"
+                          className="my-1 w-full rounded-md p-2 text-left text-gray-300 hover:bg-neutral-700"
                         >
                           {item.title}
                         </button>
@@ -112,7 +112,7 @@ export default function Header() {
             ) : (
               <button
                 onClick={() => navigate("/signin")}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-white"
               >
                 Sign In
               </button>
