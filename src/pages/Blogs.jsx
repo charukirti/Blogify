@@ -44,7 +44,7 @@ export default function Blogs() {
     <main className="max-w-7xl mx-auto px-4">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 mt-3">
-          <h1 className="text-3xl font-bold mb-8 w-fit text-gray-200 bg-black/20 backdrop-blur-sm sticky top-24 z-30">
+          <h1 className="text-2xl font-bold mb-8  text-gray-200">
             Blog Posts {selectedTag && `- Tagged with ${selectedTag}`}
           </h1>
           <div className="space-y-5 lg:space-y-8">

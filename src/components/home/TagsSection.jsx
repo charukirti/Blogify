@@ -1,6 +1,6 @@
 export default function TagsSection({ posts, onTagClick }) {
   const uniqueTags = [...new Set(posts.flatMap((post) => post.tags))];
-  console.log("TagsSection rendered", uniqueTags);
+
 
   return (
     <section className="mb-3 flex items-center lg:flex-col ">
