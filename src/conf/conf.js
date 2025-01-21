@@ -1,5 +1,5 @@
 const conf = {
-    appEndpoint: import.meta.env.VITE_APP_ENDPOINTT,
+    appEndpoint: import.meta.env.VITE_APP_ENDPOINT,
     appProjectID: import.meta.env.VITE_APP_PROJECT_ID,
     appDatabaseID: import.meta.env.VITE_APP_DATABASE_ID,
     userCollectionID: import.meta.env.VITE_APP_USER_COLLECTION_ID,
