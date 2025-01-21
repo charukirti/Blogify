@@ -46,7 +46,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link to="/" className="text-2xl font-bold text-white md:text-3xl">
-              Scriptly
+              Blogify
             </Link>
 
             <SearchBar />
