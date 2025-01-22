@@ -120,7 +120,7 @@ function App() {
               }
             />
             <Route
-              path="/callback"
+              path="/auth/callback"
               element={
                 <ProtectedRoute isAuthenticated = {false}>
                   <AuthCallback />
@@ -128,7 +128,7 @@ function App() {
               }
             />
             <Route
-              path="/failure"
+              path="/auth/failure"
               element={
                 <ProtectedRoute isAuthenticated>
                   <AuthFailure />

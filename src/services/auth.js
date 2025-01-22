@@ -68,8 +68,8 @@ export class AuthService {
 
             const session = await account.createOAuth2Session(
                 provider,
-                `${window.location.origin}/callback`,
-                `${window.location.origin}/failure`,
+                `${window.location.origin}/auth/callback`,
+                `${window.location.origin}/auth/failure`,
                 ['email', 'profile']
             );
 
