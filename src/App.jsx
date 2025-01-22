@@ -122,7 +122,7 @@ function App() {
             <Route
               path="/callback"
               element={
-                <ProtectedRoute isAuthenticated>
+                <ProtectedRoute isAuthenticated = {false}>
                   <AuthCallback />
                 </ProtectedRoute>
               }
