@@ -66,10 +66,10 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Provider is required');
             }
 
-             account.createOAuth2Session(
+            account.createOAuth2Session(
                 provider,
-                `${window.location.origin}/`,
-                `${window.location.origin}/signin`,
+                `${window.location.origin}/auth/callback`,
+                `${window.location.origin}/auth/failure`,
                 ['email', 'profile']
             );
 
