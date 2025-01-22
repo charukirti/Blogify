@@ -138,7 +138,7 @@ function App() {
             <Route
               path="*"
               element={
-                <ProtectedRoute isAuthenticated>
+                <ProtectedRoute isAuthenticated={false}>
                   <PageNotFound />
                 </ProtectedRoute>
               }
