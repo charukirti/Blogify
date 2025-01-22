@@ -68,8 +68,8 @@ export class AuthService {
 
              account.createOAuth2Session(
                 provider,
-                `${window.location.origin}/auth/callback`,
-                `${window.location.origin}/auth/failure`,
+                `${window.location.origin}/`,
+                `${window.location.origin}/signin`,
                 ['email', 'profile']
             );
 
