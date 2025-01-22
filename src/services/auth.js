@@ -47,12 +47,7 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.SESSION_ERROR, 'Session creation failed');
             }
 
-            const getUserData = await this.getCurrentUser();
-
-            const userData = {
-                id: getUserData.id,
-                name: getUserData.name
-            };
+            const userData = await this.getCurrentUser();
 
             return { session, userData };
         } catch (error) {
@@ -71,14 +66,15 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Provider is required');
             }
 
-            return await account.createOAuth2Session(
+            const session = await account.createOAuth2Session(
                 provider,
                 `${window.location.origin}/callback`,
                 `${window.location.origin}/failure`,
                 ['email', 'profile']
             );
 
-
+            const userData = this.getCurrentUser();
+            return { session, userData };
         } catch (error) {
             console.log('OAuth login failed', error);
             throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, `${provider} authenticaion failed`);
@@ -102,13 +98,7 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.USER_NOT_FOUND, 'User not found');
             }
 
-            const data = {
-                id: userData.$id,
-                name: userData.name,
-            };
-            console.log(data);
-
-            return data;
+            return userData;
         } catch (error) {
 
 
