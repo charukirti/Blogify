@@ -72,7 +72,7 @@ export default function Header() {
                 >
                   <img
                     src={
-                      userData?.email ? avatar.getInitials(userData?.email) : ""
+                      userData?.name ? avatar.getInitials(userData?.name.toString()) : ""
                     }
                     alt="Profile"
                     className="h-8 w-8 rounded-full"

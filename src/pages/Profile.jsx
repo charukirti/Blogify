@@ -9,6 +9,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   useEffect(() => {
     async function fetchUserDetails() {
@@ -16,10 +17,14 @@ export default function Profile() {
       try {
         if (userData) {
           setUser(userData);
+          const initialals = avatar.getInitials(userData.name, 240, 240);
+          setAvatarUrl(initialals.toString());
         } else {
           const currentUser = await authservice.getCurrentUser();
           if (currentUser) {
             setUser(currentUser);
+            const initialals = avatar.getInitials(currentUser.name, 240, 240);
+            setAvatarUrl(initialals.toString());
           }
         }
       } catch (error) {
@@ -50,9 +55,7 @@ export default function Profile() {
           <div className="overflow-hidden rounded-full border-2 border-gray-500">
             <img
               src={
-                user?.email
-                  ? avatar.getInitials(user?.email)
-                  : "/default-avatar.png"
+                avatarUrl
               }
               alt={`Avatar of ${user?.name || "User"}`}
               className="h-24 w-24 lg:h-32 lg:w-32"
