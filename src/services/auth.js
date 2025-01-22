@@ -27,8 +27,14 @@ export class AuthService {
             if (userAccount) {
                 const session = await this.login(email, password);
                 const userData = await this.getCurrentUser();
-                return { session, userData };
-            }
+                return {
+                    session, userData: {
+                        id: userData.id,
+                        name: userData.name
+                    }
+                };
+            };
+
         } catch (error) {
             console.error("Create account failed:", error);
             throw new AuthError(AuthService.ERROR_CODES.ACCOUNT_CREATE_FAILED, 'Account with this email id already exists');
@@ -41,13 +47,23 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Email and password required');
             }
 
-            const session = await account.createEmailPasswordSession(email, password);
+            const sessionData = await account.createEmailPasswordSession(email, password);
 
             if (!session.$id) {
                 throw new AuthError(AuthService.ERROR_CODES.SESSION_ERROR, 'Session creation failed');
             }
 
-            const userData = await this.getCurrentUser();
+            const getUserData = await this.getCurrentUser();
+
+            const userData = {
+                id: getUserData.id,
+                name: getUserData.name
+            };
+            const session = {
+                id: sessionData.$id,
+                name: sessionData.name,
+                status: sessionData.status
+            };
 
             return { session, userData };
         } catch (error) {
@@ -97,7 +113,13 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.USER_NOT_FOUND, 'User not found');
             }
 
-            return userData;
+            const data = {
+                id: userData.$id,
+                name: userData.name,
+            };
+            console.log(data);
+
+            return data;
         } catch (error) {
 
 
