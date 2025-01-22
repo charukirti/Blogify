@@ -66,15 +66,14 @@ export class AuthService {
                 throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, 'Provider is required');
             }
 
-            const session = await account.createOAuth2Session(
+            return await account.createOAuth2Session(
                 provider,
                 `${window.location.origin}/callback`,
                 `${window.location.origin}/failure`,
                 ['email', 'profile']
             );
 
-            const userData = this.getCurrentUser();
-            return { session, userData };
+
         } catch (error) {
             console.log('OAuth login failed', error);
             throw new AuthError(AuthService.ERROR_CODES.LOGIN_FAILED, `${provider} authenticaion failed`);
